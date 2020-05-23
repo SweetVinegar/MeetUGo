@@ -1,0 +1,138 @@
+doctype html
+html(lang='en')
+	head
+		include ../../../layouts/header.pug
+		meta(name='description', itemprop='description', content='exhibitions@MeetUGo')
+		meta(itemprop='name', content='exhibitions@MeetUGo')
+		title Exhibitions
+		link(href='http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.css', rel='stylesheet')
+		link(href='https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css', rel='stylesheet')
+		script(src="/js/jquery/jquery-1.11.3.min.js")
+		style.
+			a.list-group-item.active, .ongoing.list-group-item.active, a.list-group-item.active:hover, a.list-group-item.active:focus {
+			background-color: orange!important;
+			border-color: orange!important;
+			}
+	body(style='background:#FFFAF4')
+		style(type='text/css').
+			ul{padding: 0;}
+			ol, ul {list-style: none;}
+			.posts-container .post-container{padding:10px;border:2px solid #F8F8F8;margin-bottom:-2px;padding-bottom:10px;}.posts-container .post-container .right-content{float:left;width:100%;}.posts-container .post-container .right-content img{position:absolute;}.posts-container .post-container .right-content .info-post ul li{margin-top:10px;float:left;}
+			.clear {clear: both;display: block;overflow: hidden;visibility: hidden;width: 0;height: 0;}
+		div
+			div(style='background:white;position:fixed;width: 100%;z-index:3; height: 50px')
+				div(style='width: 20px;margin-left:20px;padding-top:15px;float:left')
+					a(href='/discovers', style='color:orange')
+						i.fa.fa-arrow-left(style='font-size:25px ')
+			div(style='background:#F8F8F8;position:fixed;width: 100%;z-index:2; height: 52px')
+			div(style='width: 100%;height: 52px')
+			div(style='position: relative; margin-left: auto;margin-right: auto;max-width: 800px;')
+				.col-md-3.col-md-push-9(style='word-wrap:break-word;')
+					h4 Display
+					.list-group
+						div.ongoing(class = !ongoing ? 'active' : false).list-group-item
+							form(method='get')
+								input(type='hidden', name='action', value='furture')
+								button(style='border-color:transparent;background:transparent;width:100%;height:100%;' + (!ongoing ? 'color:white' : false)) Upcomming
+						div.ongoing(class = ongoing ? 'active' : false).list-group-item
+							form(method='get')
+								input(type='hidden', name='action', value='ongoing')
+								button(style='border-color:transparent;background:transparent;width:100%;height:100%;' + (ongoing ? 'color:white' : false)) Ongoing
+					if data.cities.length
+						h4 Locations
+						.list-group
+							a(href='/exhibition', class=!data.city ? 'active' : false).list-group-item All Locations
+							each cit in data.cities
+								a(href='/exhibition/' + cit.key, class=data.city && data.city.id == cit.id ? 'active' : false).list-group-item= cit.name
+				.posts-container.col-md-9.col-md-pull-3(style='padding:0')
+					if ongoing
+						h4 Close on
+					else
+						h4 Open on
+					each exhibition in data.exhibition
+						if ongoing
+							h4(style='color: black;margin-top:30px',class=exhibition._.end.format('YMMDD'),hidden) #{exhibition._.end.format('dddd, MMMM D')}
+							div(style='background:#FFFAF4;position: fixed;top:50px;color: black;width:100%;z-index:10;',class='fix'+exhibition._id,hidden)
+								h4 Close on #{exhibition._.end.format('dddd, MMMM D')}
+							div(style='background: white',class = 'post-container ' + exhibition._id)
+								.right-content
+									div
+										a(href='/exhibition/exhinfo/' + exhibition._id)
+											p(style='word-wrap:break-word;font-size:20px;color:#333333; font-weight:bold;') #{exhibition.title}
+									.info-post
+										ul
+											li
+												i.fa.fa-calendar-o(style='font-weight:bold;color:dimgray') &nbsp #{exhibition._.start.format('MMM DD')} ~ #{exhibition._.end.format('MMM DD')} &nbsp
+											li
+												i.fa.fa-map-marker(style='font-weight:bold;color:#a1a1a1;')
+												span(style='color:dimgray') &nbsp #{exhibition.cities.name};
+												if user
+													span &nbsp #{exhibition.adress} &nbsp
+											if user
+												if user.isAdmin
+													li
+														i.fa.fa-eye(style='font-weight:bold;color:#a1a1a1;') &nbsp #{exhibition.pv} &nbsp
+										if !user
+											form(method='post')
+												input(type='hidden', name='action', value='signin')
+												button(style='background:orange;color:white;float:right').btn Signin to check information
+								.clear
+						else
+							h4(style='color: black;margin-top:30px',class=exhibition._.start.format('YMMDD'),hidden) #{exhibition._.start.format('dddd, MMMM D')}
+							div(style='background:#FFFAF4;position: fixed;top:50px;color: black;width:100%;z-index:10;',class='fix'+exhibition._id,hidden)
+								h4 Open on #{exhibition._.start.format('dddd, MMMM D')}
+							div(style='background: white',class = 'post-container ' + exhibition._id)
+								.right-content
+									div
+										a(href='/exhibition/exhinfo/' + exhibition._id)
+											p(style='word-wrap:break-word;font-size:20px;color:#333333; font-weight:bold;') #{exhibition.title}
+									.info-post
+										ul
+											li
+												i.fa.fa-calendar-o(style='font-weight:bold;color:dimgray') &nbsp #{exhibition._.start.format('MMM DD')} ~ #{exhibition._.end.format('MMM DD')} &nbsp
+											li
+												i.fa.fa-map-marker(style='font-weight:bold;color:#a1a1a1;')
+												span(style='color:dimgray') &nbsp #{exhibition.cities.name};
+												if user
+													span &nbsp #{exhibition.adress} &nbsp
+											if user
+												if user.isAdmin
+													li
+														i.fa.fa-eye(style='font-weight:bold;color:#a1a1a1;') &nbsp #{exhibition.pv} &nbsp
+										if !user
+											form(method='post')
+												input(type='hidden', name='action', value='signin')
+												button(style='background:orange;color:white;float:right').btn Signin to check information
+								.clear
+					div(style='height:200px')
+			each exhibition in data.exhibition
+				if ongoing
+					script.
+						$(".#{exhibition._.end.format('YMMDD')}").first().show();
+						var group#{exhibition._id} = $(".#{exhibition._id}");
+						$(window).scroll(function(){
+
+						var screenheight = $(this).scrollTop()+ 99;
+						var C#{exhibition._id} = group#{exhibition._id}.offset().top;
+						if(screenheight > C#{exhibition._id}){
+						$(".#{"fix"+exhibition._id}").show();
+						}
+						else{
+						$(".#{"fix"+exhibition._id}").hide();
+						}
+						});
+				else
+					script.
+						$(".#{exhibition._.start.format('YMMDD')}").first().show();
+						var group#{exhibition._id} = $(".#{exhibition._id}");
+						$(window).scroll(function(){
+
+						var screenheight = $(this).scrollTop()+ 99;
+						var C#{exhibition._id} = group#{exhibition._id}.offset().top;
+						if(screenheight > C#{exhibition._id}){
+						$(".#{"fix"+exhibition._id}").show();
+						}
+						else{
+						$(".#{"fix"+exhibition._id}").hide();
+						}
+						});

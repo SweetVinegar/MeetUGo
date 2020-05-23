@@ -1,0 +1,54 @@
+extends ../../../layouts/defaultlight
+
+block intro
+	div(style='background:white;position:fixed;width: 100%;z-index:3; height: 50px')
+		div(style='width: 20px;padding-left:15px;padding-top:15px')
+			a(href='/myevent' style='color:orange ')
+				i.fa.fa-arrow-left(style='font-size:25px')
+	div(style='background:#F8F8F8;position:fixed;width: 100%;z-index:2; height: 52px')
+	div(style='height:60px')
+	.container.panel(style='border-color:orange')
+		if !user
+			p a
+		else if !data.event
+			p not your event
+		else if data.event
+			if data.calanders.length == 0
+				h3 No people RSVP yet
+			else if data.calanders.length > 0
+				h3 
+					span(style='color:red') #{data.calanders.length} 
+					span(style='color:black')  People 
+					span will attend, include:
+				h4(style='color:black')
+					each cal in data.calanders
+						p #{cal.who.name.first} #{cal.who.name.last} 
+							span
+								a(href='mailto:'+cal.who.email) (#{cal.who.email}); 
+			else
+				p don't know what happend
+			hr
+			a(href='/event/edit/'+data.event._id )
+				button(style='background:orange;color:white', type='submit').btn EDIT
+			h4 Title
+			p #{data.event.eventTitle}
+			h4 Is the event free?
+			p #{data.event.freeEvent}
+			h4 Which City?
+			p #{data.event.cities.name}
+			h4 Ticket Link
+			a(href=data.event.ticketLink)
+				p Click Here
+			h4 Time
+			p #{data.event.eventTime}
+			h4 Adress
+			p #{data.event.eventAdress}
+			h4 Email
+			p #{data.event.eventEmail}
+			h4 Brief Introduction
+			p #{data.event.eventIntroduction}
+			h4 State
+			p #{data.event.state}
+		else
+			p don't know what happend
+		div(style='height:10px')

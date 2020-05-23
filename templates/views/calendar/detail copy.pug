@@ -1,0 +1,12 @@
+P calendar title: #{data.detail.title}
+P user: #{data.detail.who.name.first}
+P calendar location #{data.detail.location}
+P #{data.detail.class}
+if data.detail.event
+  P event title: #{data.detail.event.eventTitle}
+p #{data.detail._.time.format('MMMM D, YYYY')}
+form(method='post')
+  input(type='hidden', name='remove', value='delete')
+  .form-actions
+  button(type='submit').btn.btn-primary Delete Calendar
+

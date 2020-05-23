@@ -1,0 +1,120 @@
+extends ../../../layouts/defaultlight
+
+block intro
+	div(style='background:white;position:fixed;width: 100%;z-index:20; height: 50px')
+		div(style='width: 20px;padding-left:15px;padding-top:15px')
+			a(href='#' onClick='javascript :history.back(-1);', style='color:orange ')
+				i.fa.fa-arrow-left(style='font-size:25px ')
+	div(style='background:#F8F8F8;position:fixed;width: 100%;z-index:2; height: 52px')
+	div(style='height:60px')
+	.container.panel(style='background:#F8F8F8;height:70px;margin-bottom:-5px')
+			h3(style='text-align:center;color:#333333') Share An Event
+block content
+	.container.panel(style='border-color:#F8F8F8')
+		div(style='height:10px')
+		if applySubmitted
+			h3 Thanks for submitting event, if your event is on the unpublished list, it&#8217s succefully submitted, just need to wait to be confirmed. (Within 48 working hours.)!
+			a(href='/unevent')
+				h3 Click here to see the list
+		else if setOrganiser == false
+			form(method='get')
+				input(type='hidden', name='action', value='notOrganiser')
+				h3 If I&#8217am not organiser for the event.
+				.form-actions
+					button(type='submit',style='background:red;color:white').btn Not Organiser
+				div(style='height:10px')
+			form(method='get')
+				input(type='hidden', name='action', value='isOrganiser')
+				h3 If I&#8217am the organiser.
+				.form-actions
+					button(type='submit',style='background:red;color:white').btn Is Organiser
+			div(style='height:10px')
+		else
+			.row: .col-sm-8.col-md-6
+				form(method='post',enctype='multipart/form-data')
+					input(type='hidden', name='action', value='apply')
+					input(type='hidden', name='author', value=user._id)
+					input(type='hidden', name='isOrganiser', value = isOrganiser.toString())
+					.form-group(class=validationErrors.eventTitle ? 'has-error' : null)
+						label Title*
+						input(type='text', name='eventTitle', value=formData.eventTitle,required=true,placeholder='Title').form-control
+					.form-group(class=validationErrors.freeEvent ? 'has-error' : null)
+						label Is the event free?*
+						select(name='freeEvent',required=true).form-control
+							option(value='') (select one)
+							each type in freeEvents
+								option(value=type.value, selected=formData.freeEvent == type.value)= type.label
+					.form-group(class=validationErrors.cities ? 'has-error' : null)
+						label Which City?*
+						select(name='cities',required=true).form-control
+							option(value='') (select one)
+							each cit in data.cities
+								option(value=cit.id,selected=formData.cities == cit.id)= cit.name
+					.form-group(class=validationErrors.ticketLink ? 'has-error' : null)
+						label Ticket Link
+							if isOrganiser == true
+								span  (For paid event, add the payment link)
+							else
+								span *
+						input(type='url', name='ticketLink', value=formData.ticketLink,placeholder='http://Ticket.Link').form-control
+					if (user.isAdmin || (user.type.toString()=='community') || (user.type.toString()=='official'))
+						.form-group(class=validationErrors.flyer ? 'has-error' : null)
+							label Flyer( trial function for communities, please don't upload image large than 0.2MB, or it may not work.)
+							input(type='file', name='flyer',accept='image/*',value=formData.flyer).form-control
+					.form-group(class=validationErrors.eventTime ? 'has-error' : null)
+						label Time*
+						input#eventTime(type='text', name='eventTime',value=formData.eventTime,required=true,placeholder='2018-01-01 07:00:00 pm').form-control
+					.form-group(class=validationErrors.ticketAdress ? 'has-error' : null)
+						label Adress*
+						input(type='text', name='eventAdress', value=formData.eventAdress,required=true,placeholder='The map support the Chinese Adress, if you have Chinese Adress, add here.').form-control
+					.form-group(class=validationErrors.class ? 'has-error' : null)
+						label Public? (Need to wait to be confirmed.)
+						select(name='state').form-control
+							option(value='apply', selected=formData.state == 'apply') Public
+							option(value='hidden', selected=formData.state == 'hidden') Hidden
+					if isOrganiser == true
+						.form-group(class=validationErrors.eventIntroduction ? 'has-error' : null)
+							label Brief Introduction
+							input(type='html', name='eventIntroduction', value=formData.eventIntroduction,placeholder='Introduction').form-control
+						.form-group(class=validationErrors.rsvpOnMeetUGo ? 'has-error' : null)
+							label RSVP on MeetUGo?
+							select(name='rsvpOnMeetUGo',required=true).form-control
+								option(value='') (select one)
+									option(value= 'true', selected=formData.rsvpOnMeetUGo)= 'YES'
+									option(value= 'false', selected=formData.rsvpOnMeetUGo)= 'NO'
+						input(type='hidden', name='eventEmail', value=user.email)
+					else
+					.form-actions
+						button(type='submit',style='background:orange;color:white').btn Send
+					div(style='height:10px')
+					link(href='/styles/jquery/jquery-ui-1.12.1.min.css', rel='stylesheet')
+					script(src='/js/jquery/jquery-3.3.1.js')
+					script(src='/js/jquery/jquery-ui-1.12.1.min.js')
+					link(rel='stylesheet', media='all', type='text/css', href='/styles/jquery/jquery-ui-timepicker-addon-1.6.3.css')
+					script(src='/js/jquery/jquery-ui-timepicker-addon-1.6.3.js')
+					script.
+						$('input[type=file]').each(function()
+						{
+						var max_size=0.2*1024*1024;
+						$(this).change(function(evt)
+						{
+						var finput = $(this);
+						var files = evt.target.files; // 获得文件对象
+						var output = [];
+						for (var i = 0, f; f = files[i]; i++)
+						{  //检查文件大小
+						if(f.size > max_size)
+						{
+						alert("Please upload picture less than 0.2MB!");
+						return false;
+						$(this).val('');
+						}
+						if(!/image\/\w+/.test(f.type)){
+						alert("It's not a picture!");
+						return false;
+						}
+						}
+						});
+						});
+					script.
+						$("#eventTime").datetimepicker({controlType: 'select',oneLine: true,minDate: "0d",dateFormat: 'yy-mm-dd',timeFormat: 'hh:mm:00 tt Z',timezoneList: [{value:0,label:'Abidjan (GMT) Time'}, {value:0,label:'Accra (GMT) Time'}, {value:-600,label:'Adak (HST) Time'}, {value:180,label:'Addis Ababa (EAT) Time'}, {value:630,label:'Adelaide (ACDT) Time'}, {value:180,label:'Aden (+03) Time'}, {value:60,label:'Algiers (CET) Time'}, {value:360,label:'Almaty (+06) Time'}, {value:120,label:'Amman (EET) Time'}, {value:60,label:'Amsterdam (CET) Time'}, {value:720,label:'Anadyr (+12) Time'}, {value:-540,label:'Anchorage (AKST) Time'}, {value:60,label:'Andorra (CET) Time'}, {value:-240,label:'Anguilla (AST) Time'}, {value:180,label:'Antananarivo (EAT) Time'}, {value:-240,label:'Antigua (AST) Time'}, {value:840,label:'Apia (+14) Time'}, {value:300,label:'Aqtau (+05) Time'}, {value:300,label:'Aqtobe (+05) Time'}, {value:-180,label:'Araguaina (-03) Time'}, {value:-180,label:'ArgentinaBuenosAires(-03)Time'}, {value:-180,label:'ArgentinaCatamarca (-03) Time'}, {value:-180,label:'ArgentinaCordoba (-03) Time'}, {value:-180,label:'ArgentinaJujuy (-03) Time'}, {value:-180,label:'ArgentinaLa Rioja (-03) Time'}, {value:-180,label:'ArgentinaMendoza (-03) Time'}, {value:-180,label:'ArgentinaRio Gallegos (-03)Time'}, {value:-180,label:'ArgentinaSalta (-03) Time'}, {value:-180,label:'ArgentinaSan Juan (-03) Time'}, {value:-180,label:'ArgentinaSan Luis (-03) Time'}, {value:-180,label:'ArgentinaTucuman (-03) Time'}, {value:-180,label:'ArgentinaUshuaia (-03) Time'}, {value:-240,label:'Aruba (AST) Time'}, {value:300,label:'Ashgabat (+05) Time'}, {value:180,label:'Asmara (EAT) Time'}, {value:240,label:'Astrakhan (+04) Time'}, {value:-180,label:'Asuncion (-03) Time'}, {value:120,label:'Athens (EET) Time'}, {value:-300,label:'Atikokan (EST) Time'}, {value:300,label:'Atyrau (+05) Time'}, {value:780,label:'Auckland (NZDT) Time'}, {value:-60,label:'Azores (-01) Time'}, {value:180,label:'Baghdad (+03) Time'}, {value:-180,label:'Bahia (-03) Time'}, {value:-360,label:'Bahia Banderas (CST) Time'}, {value:180,label:'Bahrain (+03) Time'}, {value:240,label:'Baku (+04) Time'}, {value:0,label:'Bamako (GMT) Time'}, {value:420,label:'Bangkok (+07) Time'}, {value:60,label:'Bangui (WAT) Time'}, {value:0,label:'Banjul (GMT) Time'}, {value:-240,label:'Barbados (AST) Time'}, {value:420,label:'Barnaul (+07) Time'}, {value:480,label:'Beijing (+08) Time'}, {value:120,label:'Beirut (EET) Time'}, {value:-180,label:'Belem (-03) Time'}, {value:60,label:'Belgrade (CET) Time'}, {value:-360,label:'Belize (CST) Time'}, {value:60,label:'Berlin (CET) Time'}, {value:-240,label:'Bermuda (AST) Time'}, {value:360,label:'Bishkek (+06) Time'}, {value:0,label:'Bissau (GMT) Time'}, {value:-240,label:'Blanc-Sablon (AST) Time'}, {value:120,label:'Blantyre (CAT) Time'}, {value:-240,label:'Boa Vista (-04) Time'}, {value:-300,label:'Bogota (-05) Time'}, {value:-420,label:'Boise (MST) Time'}, {value:660,label:'Bougainville (+11) Time'}, {value:60,label:'Bratislava (CET) Time'}, {value:60,label:'Brazzaville (WAT) Time'}, {value:600,label:'Brisbane (AEST) Time'}, {value:630,label:'Broken Hill (ACDT) Time'}, {value:480,label:'Brunei (+08) Time'}, {value:60,label:'Brussels (CET) Time'}, {value:120,label:'Bucharest (EET) Time'}, {value:60,label:'Budapest (CET) Time'}, {value:120,label:'Bujumbura (CAT) Time'}, {value:60,label:'Busingen (CET) Time'}, {value:120,label:'Cairo (EET) Time'}, {value:-420,label:'Cambridge Bay (MST) Time'}, {value:-240,label:'Campo Grande (-04) Time'}, {value:0,label:'Canary (WET) Time'}, {value:-300,label:'Cancun (EST) Time'}, {value:-60,label:'Cape Verde (-01) Time'}, {value:-240,label:'Caracas (-04) Time'}, {value:60,label:'Casablanca (+01) Time'}, {value:480,label:'Casey (+08) Time'}, {value:-180,label:'Cayenne (-03) Time'}, {value:-300,label:'Cayman (EST) Time'}, {value:60,label:'Ceuta (CET) Time'}, {value:360,label:'Chagos (+06) Time'}, {value:825,label:'Chatham (+1345) Time'}, {value:-360,label:'Chicago (CST) Time'}, {value:-420,label:'Chihuahua (MST) Time'}, {value:120,label:'Chisinau (EET) Time'}, {value:540,label:'Chita (+09) Time'}, {value:480,label:'Choibalsan (+08) Time'}, {value:420,label:'Christmas (+07) Time'}, {value:600,label:'Chuuk (+10) Time'}, {value:390,label:'Cocos (+0630) Time'}, {value:330,label:'Colombo (+0530) Time'}, {value:180,label:'Comoro (EAT) Time'}, {value:0,label:'Conakry (GMT) Time'}, {value:60,label:'Copenhagen (CET) Time'}, {value:-360,label:'Costa Rica (CST) Time'}, {value:-420,label:'Creston (MST) Time'}, {value:-240,label:'Cuiaba (-04) Time'}, {value:-240,label:'Curacao (AST) Time'}, {value:660,label:'Currie (AEDT) Time'}, {value:0,label:'Dakar (GMT) Time'}, {value:120,label:'Damascus (EET) Time'}, {value:0,label:'Danmarkshavn (GMT) Time'}, {value:180,label:'Dar es Salaam (EAT) Time'}, {value:570,label:'Darwin (ACST) Time'}, {value:420,label:'Davis (+07) Time'}, {value:-480,label:'Dawson (PST) Time'}, {value:-420,label:'Dawson Creek (MST) Time'}, {value:-420,label:'Denver (MST) Time'}, {value:-300,label:'Detroit (EST) Time'}, {value:360,label:'Dhaka (+06) Time'}, {value:540,label:'Dili (+09) Time'}, {value:180,label:'Djibouti (EAT) Time'}, {value:-240,label:'Dominica (AST) Time'}, {value:60,label:'Douala (WAT) Time'}, {value:240,label:'Dubai (+04) Time'}, {value:0,label:'Dublin (GMT) Time'}, {value:600,label:'DumontDUrville (+10) Time'}, {value:300,label:'Dushanbe (+05) Time'}, {value:-300,label:'Easter (-05) Time'}, {value:-420,label:'Edmonton (MST) Time'}, {value:660,label:'Efate (+11) Time'}, {value:-300,label:'Eirunepe (-05) Time'}, {value:60,label:'El Aaiun (+01) Time'}, {value:-360,label:'El Salvador (CST) Time'}, {value:780,label:'Enderbury (+13) Time'}, {value:525,label:'Eucla (+0845) Time'}, {value:780,label:'Fakaofo (+13) Time'}, {value:120,label:'Famagusta (EET) Time'}, {value:0,label:'Faroe (WET) Time'}, {value:720,label:'Fiji (+12) Time'}, {value:-420,label:'Fort Nelson (MST) Time'}, {value:-180,label:'Fortaleza (-03) Time'}, {value:0,label:'Freetown (GMT) Time'}, {value:720,label:'Funafuti (+12) Time'}, {value:120,label:'Gaborone (CAT) Time'}, {value:-360,label:'Galapagos (-06) Time'}, {value:-540,label:'Gambier (-09) Time'}, {value:120,label:'Gaza (EET) Time'}, {value:60,label:'Gibraltar (CET) Time'}, {value:-240,label:'Glace Bay (AST) Time'}, {value:-180,label:'Godthab (-03) Time'}, {value:-240,label:'Goose Bay (AST) Time'}, {value:-300,label:'Grand Turk (EST) Time'}, {value:-240,label:'Grenada (AST) Time'}, {value:660,label:'Guadalcanal (+11) Time'}, {value:-240,label:'Guadeloupe (AST) Time'}, {value:600,label:'Guam (ChST) Time'}, {value:-360,label:'Guatemala (CST) Time'}, {value:-300,label:'Guayaquil (-05) Time'}, {value:0,label:'Guernsey (GMT) Time'}, {value:-240,label:'Guyana (-04) Time'}, {value:-240,label:'Halifax (AST) Time'}, {value:120,label:'Harare (CAT) Time'}, {value:-300,label:'Havana (CST) Time'}, {value:120,label:'Hebron (EET) Time'}, {value:120,label:'Helsinki (EET) Time'}, {value:-420,label:'Hermosillo (MST) Time'}, {value:420,label:'Ho Chi Minh (+07) Time'}, {value:660,label:'Hobart (AEDT) Time'}, {value:480,label:'Hong Kong (HKT) Time'}, {value:-600,label:'Honolulu (HST) Time'}, {value:420,label:'Hovd (+07) Time'}, {value:-300,label:'IndianaIndianapolis (EST) Time'}, {value:-360,label:'IndianaKnox (CST) Time'}, {value:-300,label:'IndianaMarengo (EST) Time'}, {value:-300,label:'IndianaPetersburg (EST) Time'}, {value:-360,label:'IndianaTell City (CST) Time'}, {value:-300,label:'IndianaVevay (EST) Time'}, {value:-300,label:'IndianaVincennes (EST) Time'}, {value:-300,label:'IndianaWinamac (EST) Time'}, {value:-420,label:'Inuvik (MST) Time'}, {value:-300,label:'Iqaluit (EST) Time'}, {value:480,label:'Irkutsk (+08) Time'}, {value:0,label:'Isle of Man (GMT) Time'}, {value:180,label:'Istanbul (+03) Time'}, {value:420,label:'Jakarta (WIB) Time'}, {value:-300,label:'Jamaica (EST) Time'}, {value:540,label:'Jayapura (WIT) Time'}, {value:0,label:'Jersey (GMT) Time'}, {value:120,label:'Jerusalem (IST) Time'}, {value:120,label:'Johannesburg (SAST) Time'}, {value:180,label:'Juba (EAT) Time'}, {value:-540,label:'Juneau (AKST) Time'}, {value:270,label:'Kabul (+0430) Time'}, {value:120,label:'Kaliningrad (EET) Time'}, {value:720,label:'Kamchatka (+12) Time'}, {value:180,label:'Kampala (EAT) Time'}, {value:300,label:'Karachi (PKT) Time'}, {value:345,label:'Kathmandu (+0545) Time'}, {value:-300,label:'KentuckyLouisville (EST) Time'}, {value:-300,label:'KentuckyMonticello (EST) Time'}, {value:300,label:'Kerguelen (+05) Time'}, {value:540,label:'Khandyga (+09) Time'}, {value:120,label:'Khartoum (CAT) Time'}, {value:120,label:'Kiev (EET) Time'}, {value:120,label:'Kigali (CAT) Time'}, {value:60,label:'Kinshasa (WAT) Time'}, {value:840,label:'Kiritimati (+14) Time'}, {value:180,label:'Kirov (+03) Time'}, {value:330,label:'Kolkata (IST) Time'}, {value:660,label:'Kosrae (+11) Time'}, {value:-240,label:'Kralendijk (AST) Time'}, {value:420,label:'Krasnoyarsk (+07) Time'}, {value:480,label:'Kuala Lumpur (+08) Time'}, {value:480,label:'Kuching (+08) Time'}, {value:180,label:'Kuwait (+03) Time'}, {value:720,label:'Kwajalein (+12) Time'}, {value:-240,label:'La Paz (-04) Time'}, {value:60,label:'Lagos (WAT) Time'}, {value:60,label:'Libreville (WAT) Time'}, {value:-300,label:'Lima (-05) Time'}, {value:600,label:'Lindeman (AEST) Time'}, {value:0,label:'Lisbon (WET) Time'}, {value:60,label:'Ljubljana (CET) Time'}, {value:0,label:'Lome (GMT) Time'}, {value:0,label:'London (GMT) Time'}, {value:60,label:'Longyearbyen (CET) Time'}, {value:660,label:'Lord Howe (+11) Time'}, {value:-480,label:'Los Angeles (PST) Time'}, {value:-240,label:'Lower Princes (AST) Time'}, {value:60,label:'Luanda (WAT) Time'}, {value:120,label:'Lubumbashi (CAT) Time'}, {value:120,label:'Lusaka (CAT) Time'}, {value:60,label:'Luxembourg (CET) Time'}, {value:480,label:'Macau (CST) Time'}, {value:-180,label:'Maceio (-03) Time'}, {value:660,label:'Macquarie (+11) Time'}, {value:0,label:'Madeira (WET) Time'}, {value:60,label:'Madrid (CET) Time'}, {value:660,label:'Magadan (+11) Time'}, {value:240,label:'Mahe (+04) Time'}, {value:720,label:'Majuro (+12) Time'}, {value:480,label:'Makassar (WITA) Time'}, {value:60,label:'Malabo (WAT) Time'}, {value:300,label:'Maldives (+05) Time'}, {value:60,label:'Malta (CET) Time'}, {value:-360,label:'Managua (CST) Time'}, {value:-240,label:'Manaus (-04) Time'}, {value:480,label:'Manila (PST) Time'}, {value:120,label:'Maputo (CAT) Time'}, {value:120,label:'Mariehamn (EET) Time'}, {value:-240,label:'Marigot (AST) Time'}, {value:-570,label:'Marquesas (-0930) Time'}, {value:-240,label:'Martinique (AST) Time'}, {value:120,label:'Maseru (SAST) Time'}, {value:-360,label:'Matamoros (CST) Time'}, {value:240,label:'Mauritius (+04) Time'}, {value:300,label:'Mawson (+05) Time'}, {value:180,label:'Mayotte (EAT) Time'}, {value:-420,label:'Mazatlan (MST) Time'}, {value:120,label:'Mbabane (SAST) Time'}, {value:780,label:'McMurdo (NZDT) Time'}, {value:660,label:'Melbourne (AEDT) Time'}, {value:-360,label:'Menominee (CST) Time'}, {value:-360,label:'Merida (CST) Time'}, {value:-480,label:'Metlakatla (PST) Time'}, {value:-360,label:'Mexico City (CST) Time'}, {value:-660,label:'Midway (SST) Time'}, {value:180,label:'Minsk (+03) Time'}, {value:-180,label:'Miquelon (-03) Time'}, {value:180,label:'Mogadishu (EAT) Time'}, {value:60,label:'Monaco (CET) Time'}, {value:-240,label:'Moncton (AST) Time'}, {value:0,label:'Monrovia (GMT) Time'}, {value:-360,label:'Monterrey (CST) Time'}, {value:-180,label:'Montevideo (-03) Time'}, {value:-240,label:'Montserrat (AST) Time'}, {value:180,label:'Moscow (MSK) Time'}, {value:240,label:'Muscat (+04) Time'}, {value:180,label:'Nairobi (EAT) Time'}, {value:-300,label:'Nassau (EST) Time'}, {value:720,label:'Nauru (+12) Time'}, {value:60,label:'Ndjamena (WAT) Time'}, {value:-300,label:'New York (EST) Time'}, {value:60,label:'Niamey (WAT) Time'}, {value:120,label:'Nicosia (EET) Time'}, {value:-300,label:'Nipigon (EST) Time'}, {value:-660,label:'Niue (-11) Time'}, {value:-540,label:'Nome (AKST) Time'}, {value:660,label:'Norfolk (+11) Time'}, {value:-120,label:'Noronha (-02) Time'}, {value:-360,label:'North DakotaBeula(CST) Time'}, {value:-360,label:'North DakotaCenter(CST)Time'}, {value:-360,label:'North Dakota NewSalem(CST)'}, {value:0,label:'Nouakchott (GMT) Time'}, {value:660,label:'Noumea (+11) Time'}, {value:420,label:'Novokuznetsk (+07) Time'}, {value:420,label:'Novosibirsk (+07) Time'}, {value:-420,label:'Ojinaga (MST) Time'}, {value:360,label:'Omsk (+06) Time'}, {value:300,label:'Oral (+05) Time'}, {value:60,label:'Oslo (CET) Time'}, {value:0,label:'Ouagadougou (GMT) Time'}, {value:-660,label:'Pago Pago (SST) Time'}, {value:540,label:'Palau (+09) Time'}, {value:-180,label:'Palmer (-03) Time'}, {value:-300,label:'Panama (EST) Time'}, {value:-300,label:'Pangnirtung (EST) Time'}, {value:-180,label:'Paramaribo (-03) Time'}, {value:60,label:'Paris (CET) Time'}, {value:480,label:'Perth (AWST) Time'}, {value:420,label:'Phnom Penh (+07) Time'}, {value:-420,label:'Phoenix (MST) Time'}, {value:-480,label:'Pitcairn (-08) Time'}, {value:60,label:'Podgorica (CET) Time'}, {value:660,label:'Pohnpei (+11) Time'}, {value:420,label:'Pontianak (WIB) Time'}, {value:600,label:'Port Moresby (+10) Time'}, {value:-240,label:'Port of Spain (AST) Time'}, {value:-300,label:'Port-au-Prince (EST) Time'}, {value:-240,label:'Porto Velho (-04) Time'}, {value:60,label:'Porto-Novo (WAT) Time'}, {value:60,label:'Prague (CET) Time'}, {value:-240,label:'Puerto Rico (AST) Time'}, {value:-180,label:'Punta Arenas (-03) Time'}, {value:540,label:'Pyongyang (KST) Time'}, {value:180,label:'Qatar (+03) Time'}, {value:360,label:'Qostanay (+06) Time'}, {value:300,label:'Qyzylorda (+05) Time'}, {value:-360,label:'Rainy River (CST) Time'}, {value:-360,label:'Rankin Inlet (CST) Time'}, {value:-600,label:'Rarotonga (-10) Time'}, {value:-180,label:'Recife (-03) Time'}, {value:-360,label:'Regina (CST) Time'}, {value:-360,label:'Resolute (CST) Time'}, {value:240,label:'Reunion (+04) Time'}, {value:0,label:'Reykjavik (GMT) Time'}, {value:120,label:'Riga (EET) Time'}, {value:-300,label:'Rio Branco (-05) Time'}, {value:180,label:'Riyadh (+03) Time'}, {value:60,label:'Rome (CET) Time'}, {value:-180,label:'Rothera (-03) Time'}, {value:600,label:'Saipan (ChST) Time'}, {value:660,label:'Sakhalin (+11) Time'}, {value:240,label:'Samara (+04) Time'}, {value:300,label:'Samarkand (+05) Time'}, {value:60,label:'San Marino (CET) Time'}, {value:-180,label:'Santarem (-03) Time'}, {value:-180,label:'Santiago (-03) Time'}, {value:-240,label:'Santo Domingo (AST) Time'}, {value:-180,label:'Sao Paulo (-03) Time'}, {value:0,label:'Sao Tome (GMT) Time'}, {value:60,label:'Sarajevo (CET) Time'}, {value:240,label:'Saratov (+04) Time'}, {value:-60,label:'Scoresbysund (-01) Time'}, {value:540,label:'Seoul (KST) Time'}, {value:480,label:'Shanghai (CST) Time'}, {value:180,label:'Simferopol (MSK) Time'}, {value:480,label:'Singapore (+08) Time'}, {value:-540,label:'Sitka (AKST) Time'}, {value:60,label:'Skopje (CET) Time'}, {value:120,label:'Sofia (EET) Time'}, {value:-120,label:'South Georgia (-02) Time'}, {value:660,label:'Srednekolymsk (+11) Time'}, {value:-240,label:'St Barthelemy (AST) Time'}, {value:0,label:'St Helena (GMT) Time'}, {value:-210,label:'St Johns (NST) Time'}, {value:-240,label:'St Kitts (AST) Time'}, {value:-240,label:'St Lucia (AST) Time'}, {value:-240,label:'St Thomas (AST) Time'}, {value:-240,label:'St Vincent (AST) Time'}, {value:-180,label:'Stanley (-03) Time'}, {value:60,label:'Stockholm (CET) Time'}, {value:-360,label:'Swift Current (CST) Time'}, {value:660,label:'Sydney (AEDT) Time'}, {value:180,label:'Syowa (+03) Time'}, {value:-600,label:'Tahiti (-10) Time'}, {value:480,label:'Taipei (CST) Time'}, {value:120,label:'Tallinn (EET) Time'}, {value:720,label:'Tarawa (+12) Time'}, {value:300,label:'Tashkent (+05) Time'}, {value:240,label:'Tbilisi (+04) Time'}, {value:-360,label:'Tegucigalpa (CST) Time'}, {value:210,label:'Tehran (+0330) Time'}, {value:360,label:'Thimphu (+06) Time'}, {value:-240,label:'Thule (AST) Time'}, {value:-300,label:'Thunder Bay (EST) Time'}, {value:-480,label:'Tijuana (PST) Time'}, {value:60,label:'Tirane (CET) Time'}, {value:540,label:'Tokyo (JST) Time'}, {value:420,label:'Tomsk (+07) Time'}, {value:780,label:'Tongatapu (+13) Time'}, {value:-300,label:'Toronto (EST) Time'}, {value:-240,label:'Tortola (AST) Time'}, {value:120,label:'Tripoli (EET) Time'}, {value:0,label:'Troll (+00) Time'}, {value:60,label:'Tunis (CET) Time'}, {value:480,label:'Ulaanbaatar (+08) Time'}, {value:240,label:'Ulyanovsk (+04) Time'}, {value:360,label:'Urumqi (+06) Time'}, {value:600,label:'Ust-Nera (+10) Time'}, {value:0,label:'UTC Time'}, {value:120,label:'Uzhgorod (EET) Time'}, {value:60,label:'Vaduz (CET) Time'}, {value:-480,label:'Vancouver (PST) Time'}, {value:60,label:'Vatican (CET) Time'}, {value:60,label:'Vienna (CET) Time'}, {value:420,label:'Vientiane (+07) Time'}, {value:120,label:'Vilnius (EET) Time'}, {value:600,label:'Vladivostok (+10) Time'}, {value:240,label:'Volgograd (+04) Time'}, {value:360,label:'Vostok (+06) Time'}, {value:720,label:'Wake (+12) Time'}, {value:720,label:'Wallis (+12) Time'}, {value:60,label:'Warsaw (CET) Time'}, {value:-480,label:'Whitehorse (PST) Time'}, {value:120,label:'Windhoek (CAT) Time'}, {value:-360,label:'Winnipeg (CST) Time'}, {value:-540,label:'Yakutat (AKST) Time'}, {value:540,label:'Yakutsk (+09) Time'}, {value:390,label:'Yangon (+0630) Time'}, {value:300,label:'Yekaterinburg (+05) Time'}, {value:-420,label:'Yellowknife (MST) Time'}, {value:240,label:'Yerevan (+04) Time'}, {value:60,label:'Zagreb (CET) Time'}, {value:120,label:'Zaporozhye (EET) Time'}, {value:60,label:'Zurich (CET) Time'}]});

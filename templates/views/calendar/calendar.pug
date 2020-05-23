@@ -1,0 +1,292 @@
+doctype html
+html(lang='en')
+  head
+    include ../../layouts/header.pug
+    meta(itemprop='image', content='http://res.meetugo.com/img/logolarge.jpeg')
+    if user
+      meta(name='description', itemprop='description', content = user.name.first + ' Candelar')
+      meta(itemprop='name', content = user.name.first + ' Candelar')
+      title #{user.name.first} Candelar
+    else
+      meta(name='description', itemprop='description', content="Social Calendar - MeetUGo")
+      title MeetUGo.Com | Social Calendar + Events
+    //-for nav buttom
+    link(href='/styles/navstyle.css', rel='stylesheet')
+    script(src="/js/jquery/jquery-1.11.3.min.js")
+    style.
+      a.list-group-item.active, a.list-group-item.active:hover, a.list-group-item.active:focus {
+      background-color: orange!important;
+      border-color: orange!important;
+      }
+  body(style='background:#FFFAF4')
+    style(type='text/css').
+      ul{padding: 0;}
+      ol, ul {list-style: none;}
+      .posts-container .post-container{padding:10px;border:2px solid #F8F8F8;margin-bottom:-2px;padding-bottom:10px;overflow:auto}.posts-container .post-container .right-content{float:left;width:100%;}.posts-container .post-container .right-content img{position:absolute;}.posts-container .post-container .right-content .info-post ul li{margin-top:5px;float:left;}
+      .clear {clear: both;display: block;overflow: hidden;visibility: hidden;width: 0;height: 0;}
+    div
+      div(style='background:white;position:fixed;width: 100%;z-index:3; height: 50px')
+        div(style='width: 20px;margin-left:10px;padding-top:15px;float:left')
+          p(style='color:orange; font-weight:bold ') MeetUGo.Com
+            //-i.fa.fa-arrow-left(style='font-size:25px ')
+        if user
+          div(style='margin-right:10px;padding-top:10px;float:right')
+            a(href='/mycalendar/'+user._id, style='color:orange')
+              span(style='color:orange; font-weight:bold') Friends Calendar&nbsp
+              span
+                i.fa.fa-users(style='color:orange;font-size:25px')
+              span &nbsp
+              span
+                i.fa.fa-caret-down
+        else
+          div(style='float:right')
+            form(method='post')
+              input(type='hidden', name='action', value='signin')
+              button(style='background: transparent').btn
+                img(src='http://res.meetugo.com/img/favicon.ico', style='height:40px;width:40px;border-radius:100%;')
+      div(style='background:#F8F8F8;position:fixed;width: 100%;z-index:2; height: 52px')
+      div(style='background:orange;width: 100%;height: 50px')
+      div(style='position: relative; margin-left: auto;margin-right: auto;max-width: 600px;')
+        if !user
+          .posts-container(style='padding:0;margin-top:50px')
+            .post-container(style='background: white')
+              div(style='float:left;margin-right:10px;')
+                form(method='post', style='text-align:center')
+                  input(type='hidden', name='action', value='signin')
+                  button(style='background: white').btn
+                    div(style='border:solid 2px orange;height:50px;width:50px;border-radius:100%;font-size:30px')
+                      i.fa.fa-calendar(style='color:orange')
+              div(style='float:left')
+                .right-content
+                  form(method='post', style='text-align:center')
+                        input(type='hidden', name='action', value='signin')
+                        button(style='background:white;color:dimgray;word-wrap:break-word;font-size:20px;font-weight:bold;margin-top:12px').btn Social Calendar
+                .clear
+            .post-container(style='background: white')
+              div(style='text-align:center')
+                form(method='post', style='text-align:center')
+                  input(type='hidden', name='action', value='signin')
+                  button(style='background:orange;color:white').btn Signin       
+              .clear
+          .posts-container(style='padding:0;margin-top:50px')
+            .post-container(style='background: white')
+              a(href='/event')
+                div(style='float:left;margin-right:20px;')
+                    div(style='border:solid 2px orange;height:50px;width:50px;border-radius:100%;font-size:30px;margin-left:14px;')
+                            i.fa.fa-compass(style='margin-left:10px;margin-top:8px;color:orange')
+                div
+                  button(style='background:white;color:dimgray;word-wrap:break-word;font-size:20px;font-weight:bold;margin-top:5px').btn Itenary/Events Shop
+                  .clear
+          if data.lastevent
+            .posts-container(style='padding:0')
+                div
+                  .post-container(style='background: white')
+                    .right-content
+                      div
+                        a(href='/calendar/eventinfo/' + data.lastevent._id)
+                          h4(style='color: dimgray') #{data.lastevent._.eventTime.format('dddd, Do MMM')} Upcoming event
+                          p(style='word-wrap:break-word;font-size:20px;font-weight:bold')
+                            span(style='color:dimgray;') #{data.lastevent.eventTitle}
+                        .info-post
+                          ul
+                            li
+                              i.fa.fa-clock-o(style='font-weight:bold;color:#a1a1a1;') &nbsp #{data.lastevent._.eventTime.format('hh:mm a')} &nbsp
+                            li
+                              i.fa.fa-map-marker(style='font-weight:bold;color:#a1a1a1;') &nbsp #{data.lastevent.cities.name};
+                    .clear
+                  .post-container(style='background: white')
+                    .right-content
+                      div
+                        a(href='/event')
+                          p(style='word-wrap:break-word;font-size:20px;font-weight:bold;text-align:center;color:orange') + More Events
+                    .clear
+          .posts-container(style='padding:0;margin-top:50px')
+            .post-container(style='background: white')
+              .right-content
+                div(style='text-align:center')
+                  a(href='/app.html')
+                    button(style='background:orange;color:white').btn Android APP      
+              .clear
+          div(style='background:white;margin-top:50px;border:2px solid #F8F8F8')
+            div(style='text-align:center')
+              h3 WeChat Official Account
+              img(style='max-width:250px;width:80%' src='/wechat.jpg')   
+        else
+          if (data.calendar.length == 0)
+            center
+              h3 Create a Schedule.
+          else
+            h3 Hi, #{user.name.first}, calendar in your friend circle is here.
+          .posts-container(style='padding:0')
+            a(href='/create/calendar')
+              .post-container(style='background: white')
+                .right-content
+                  div(style='text-align:center')
+                    button(style='background:red;color:white').btn + New Schedule          
+                .clear
+          if (data.calendar.length == 0)
+            .posts-container(style='padding:0')
+              if data.lastevent
+                div
+                  h4(style='color: black;margin-top:30px') No schedule yet? Check upcoming events here!
+                  h4(style='color: black;margin-top:30px') #{data.lastevent._.eventTime.format('dddd, Do MMM')}
+                  .post-container(style='background: white')
+                    .right-content
+                      div
+                        a(href='/calendar/eventinfo/' + data.lastevent._id)
+                          p(style='word-wrap:break-word;font-size:20px;font-weight:bold')
+                            span(style='color:dimgray;') #{data.lastevent.eventTitle}
+                        .info-post
+                          ul
+                            li
+                              i.fa.fa-clock-o(style='font-weight:bold;color:#a1a1a1;') &nbsp #{data.lastevent._.eventTime.format('hh:mm a')} &nbsp
+                            li
+                              i.fa.fa-map-marker(style='font-weight:bold;color:#a1a1a1;') &nbsp #{data.lastevent.cities.name};
+                    .clear
+                  .post-container(style='background: white')
+                    .right-content
+                      div
+                        a(href='/event')
+                          p(style='word-wrap:break-word;font-size:20px;font-weight:bold;text-align:center;color:orange') + More Events
+                    .clear
+          .posts-container(style='padding:0')
+            each calendar in data.calendar
+              if calendar.event
+                div(class = calendar.event._id.toString(), hidden)
+                  h4(style='color: black;margin-top:30px',class=calendar._.time.format('YMMDD'),hidden) #{calendar._.time.format('dddd, Do MMM')}
+                  div(style='background:#FFFAF4;position: fixed;top:50px;color: black;width:100%;z-index:10',class='fix'+calendar._id,hidden)
+                    h4 #{calendar._.time.format('dddd, Do MMM')}
+                  div(style='background: white' class='post-container '+ calendar._id)
+                    .right-content
+                      div
+                        a(href='/calendar/eventinfo/' + calendar.event._id)
+                          p(style='word-wrap:break-word;font-size:20px;font-weight:bold')
+                            span(class='oncalendar'+calendar.event._id,hidden,style='color:#00DE9E')
+                              i.fa.fa-check-circle &nbsp
+                            span(style='color:dimgray;') #{calendar.title}
+                        .info-post
+                          ul
+                            li
+                              i.fa.fa-clock-o(style='font-weight:bold;color:#a1a1a1;') &nbsp #{calendar._.time.format('hh:mm a')} &nbsp
+                            li
+                              i.fa.fa-user-o(style='font-weight:bold;color:#a1a1a1;')
+                            each can in data.friendcalendar
+                              if can.event
+                                if can.event._id.toString() == calendar.event._id.toString()
+                                  li(style='color:#a1a1a1;')
+                                    a(href='/mycalendar/'+can.who._id, style='font-weight:bold;color:orange;') &nbsp #{can.who.name.first};
+                                else
+                              else
+                            form(method='post',class='add'+ calendar.event._id)
+                              input(type='hidden', name='action', value='add')
+                              input(type='hidden', name='who', value=user._id)
+                              input(type='hidden', name='title', value=calendar.event.eventTitle)
+                              input(type='hidden', name='time', value=calendar.event.eventTime)
+                              input(type='hidden', name='location', value=calendar.event.eventAdress)
+                              input(type='hidden', name='description', value=calendar.event.eventIntroduction)
+                              input(type='hidden', name='class', value='Event')
+                              input(type='hidden', name='event', value=calendar.event._id)
+                              input(type='hidden', name='attending', value=true)
+                              .form-actions
+                                button(type='submit',style='background:orange;color:white;float:right').btn Add to my calendar
+                            div(class='oncalendar'+calendar.event._id,hidden)
+                              a(href='/calendar/eventinfo/' + calendar.event._id)
+                                button(style='background:#00DE9E;color:white;float:right').btn On my calendar
+                    .clear
+              else
+                h4(style='color: black;margin-top:30px',class=calendar._.time.format('YMMDD'),hidden) #{calendar._.time.format('dddd, Do MMM')}
+                div(style='background:#FFFAF4;position: fixed;top:50px;color: black;width:100%;z-index:10',class='fix'+calendar._id,hidden)
+                  h4 #{calendar._.time.format('dddd, Do MMM')}
+                div(style='background: white' class='post-container '+ calendar._id)
+                  a(href='/calendar/' + calendar.slug)
+                    div(style='float:left;margin-right:10px;')
+                      if calendar.who.profilePic.filename
+                        img(src='http://res.meetugo.com/pics/user/'+ calendar.who.profilePic.filename, style='border:solid 2px orange;height:50px;width:50px;border-radius:100%;')
+                      else
+                        div(style='border:solid 2px orange;height:50px;width:50px;border-radius:100%;font-size:30px')
+                          i.fa.fa-user-o(style='margin-left:10px;color:orange')
+                  div(style='float:left')
+                      .right-content
+                          a(href='/calendar/' + calendar.slug)
+                            if calendar.who._id.toString() == user._id.toString()
+                              p(style='word-wrap:break-word;font-size:20px;font-weight:bold;margin-top:12px')
+                                span(style='color:#00DE9E;')
+                                  i.fa.fa-check-circle &nbsp
+                                span(style='color:dimgray;') #{calendar.title}
+                            else
+                              p(style='word-wrap:break-word;font-size:20px;color:dimgray; font-weight:bold;margin-top:12px') #{calendar.title}
+                  div
+                    .right-content
+                          .info-post
+                            ul
+                              li
+                                i.fa.fa-clock-o(style='font-weight:bold;color:#a1a1a1;') &nbsp #{calendar._.time.format('hh:mm a')} &nbsp
+                              li
+                                i.fa.fa-user-o(style='font-weight:bold;color:#a1a1a1;')
+                                  a(href='/mycalendar/'+calendar.who._id, style='font-weight:bold;color:orange;') &nbsp #{calendar.who.name.first} &nbsp
+                              a(href='/calendar/' + calendar.slug)
+                                if calendar.who._id.toString() == user._id.toString()
+                                  button(style='background:#00DE9E;color:white;float:right').btn My schedule
+                                else
+                                  button(style='background:orange;color:white;float:right').btn #{calendar.who.name.first}&#8217s Schedule
+                  .clear
+          each calendar in data.calendar
+            script.
+              $(".#{calendar._.time.format('YMMDD')}").first().show();
+              var group#{calendar._id} = $(".#{calendar._id}");
+              $(window).scroll(function(){
+
+              var screenheight = $(this).scrollTop()+ 99;
+              var C#{calendar._id} = group#{calendar._id}.offset().top;
+              if(screenheight > C#{calendar._id}){
+              $(".#{"fix"+calendar._id}").show();
+              }
+              else{
+              $(".#{"fix"+calendar._id}").hide();
+              }
+              });
+            if calendar.event
+              script.
+                $(".#{calendar.event._id}").first().show();
+          each cal in mycalendar
+            if cal.event
+              script.
+                $(".add#{cal.event}").hide();
+              script.
+                $(".oncalendar#{cal.event}").show();            
+            else
+    div(style='height:200px')
+    .board.putbottom(style='background:white')
+      div(style='background:#F8F8F8;height: 2px')      
+      div
+        ul.nav.nav-tabs
+          li.active
+            a(href='/', data-toggle='tab')
+              span.round-tabs.one
+                i.fa.fa-calendar
+                h5 Calendar
+            br
+          li
+            a(href='/contact')
+              span.round-tabs.one
+                i.fa.fa-users
+                h5 Contacts
+            br
+          li
+            a(href='/create/event')
+              span.round-tabs.one(style='background:transparent!important;border:2px;color:black')
+                i.fa.fa-plus.fa-x
+                h5 Post
+            br
+          li
+            a(href='/discovers')
+              span.round-tabs.one
+                i.fa.fa-compass
+                h5 Discover
+            br
+          li
+            a(href='/setting')
+              span.round-tabs.one
+                i.fa.fa-cog
+                h5 Setting
+            br

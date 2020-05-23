@@ -1,0 +1,25 @@
+a(href='/contact')
+	p < back to contact list
+if (user._id = myinfo._id)
+	p Share this page to people to add you 
+else
+	p #{user._id} =  #{myinfo._id}
+p Hi #{user.name.first} #{user.name.last}
+if userfollowme
+	if mefollowuser
+		p #{myinfo.name.first} #{myinfo.name.last} and me are already friends
+	else
+		p you already send #{myinfo.name.first} #{myinfo.name.last}	friend request, just wait to be confirmed
+else
+	if mefollowuser
+		p #{myinfo.name.first} #{myinfo.name.last} already send you friend request
+		form(method='post')
+			input(type='hidden', name='action', value='followme')
+			input(type='hidden', name='_id', value = me)
+			button(type='submit',style='background:orange;color:white').btn Check Friend Request
+	else
+		p send #{myinfo.name.first} #{myinfo.name.last}	friend request
+		form(method='post')
+			input(type='hidden', name='action', value = 'followme')
+			input(type='hidden', name='_id', value = me)
+			button(type='submit',style='background:orange;color:white').btn sent friend request

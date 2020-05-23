@@ -1,0 +1,64 @@
+extends ../../layouts/defaultlight
+
+block intro
+  div(style='background:white;position:fixed;width: 100%;z-index:3; height: 50px')
+    div(style='width: 20px;padding-left:15px;padding-top:15px')
+      a(href='#' onClick='javascript :history.back(-1);', style='color:orange ')
+        i.fa.fa-arrow-left(style='font-size:25px ')
+  div(style='background:#F8F8F8;position:fixed;width: 100%;z-index:2; height: 52px')
+  div(style='height:60px')
+    
+block content
+  h3(style='padding-left:25px')  Create a schedule
+  .container.panel(style='border-color:orange')
+    if applySubmitted
+      h Done
+    else
+      if !isEvent
+        form(method='get')
+          input(type='hidden', name='action', value='isEvent')
+          h3 Discover from events.
+          .form-actions
+            button(type='submit',style='background:orange;color:white').btn Add from events
+        form(method='get')
+          input(type='hidden', name='action', value='notEvent')
+          h3 Not an event, schedule it.
+          .form-actions
+            button(type='submit',style='background:orange;color:white').btn Personal Schedule
+        //h3 Create or share an event
+        //a(href='/create/event')
+          //button(style='background:orange;color:white').btn Create an event
+        div(style='height:10px')
+      else
+        h3 Hi, #{user.name.first}, let&#8217s create your schedule
+        .row: .col-sm-8.col-md-6
+          form(method='post')
+            input(type='hidden', name='action', value='create')
+            input(type='hidden', name='who', value=user._id)
+            .form-group(class=validationErrors.title ? 'has-error' : null)
+              label Title*
+              input(type='text', name='title', value=formData.title, required=true,placeholder='Title').form-control
+            .form-group(class=validationErrors.description ? 'has-error' : null)
+              label Description
+              textarea(style='height:100px', type='html', name='description', value=formData.description,placeholder='What to do?').form-control
+            .form-group(class=validationErrors.time ? 'has-error' : null)
+              label Time*
+              input#time(type='text', name='time',value=formData.time, required=true,placeholder='2018-01-01 07:00:00 pm').form-control
+            .form-group(class=validationErrors.location ? 'has-error' : null)
+              label Where is the location*
+              input(type='text', name='location', value=formData.location, required=true,placeholder='Adress').form-control
+            .form-group(class=validationErrors.freeEvent ? 'has-error' : null)
+              label Public? (Your need to set it public to share with your friends.)*
+              select(name='class').form-control
+                option(value='Private Schedule', selected=formData.class == 'Private Schedule') Private
+                option(value='Public Schedule', selected=formData.class == 'Public Schedule') Public
+            .form-actions
+              button(type='submit',style='background:orange;color:white').btn Create
+            link(href='/styles/jquery/jquery-ui-1.12.1.min.css', rel='stylesheet')
+            script(src='/js/jquery/jquery-3.3.1.js')
+            script(src='/js/jquery/jquery-ui-1.12.1.min.js')
+            link(rel='stylesheet', media='all', type='text/css', href='/styles/jquery/jquery-ui-timepicker-addon-1.6.3.css')
+            script(src='/js/jquery/jquery-ui-timepicker-addon-1.6.3.js')
+            script.
+              $("#time").datetimepicker({controlType: 'select',oneLine: true,minDate: "0d",dateFormat:'yy-mm-dd',timeFormat: 'hh:mm:ss tt',defaultDate:new Date(),defaultTime:new Date()});
+    div(style='height:10px')

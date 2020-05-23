@@ -1,0 +1,71 @@
+
+
+/* =============================================================
+   GENERAL STYLES
+ ============================================================ */
+body {
+    font-family: 'Open Sans', sans-serif;
+    margin:0px!important
+
+}
+
+
+
+.text-center {
+    text-align:center;
+}
+
+
+
+.fixincenter{position:fixed;}
+ .putbottom{position:fixed;
+            bottom:0;}   
+
+
+.blurry {
+  color: transparent;
+  text-shadow: 0 0 15px #666;
+  transition: text-shadow 2s cubic-bezier(0, 1, 0, 1);
+  -webkit-transition: text-shadow 2s cubic-bezier(0, 1, 0, 1);
+  -moz-transition: text-shadow 2s cubic-bezier(0, 1, 0, 1);
+  -o-transition: text-shadow 2s cubic-bezier(0, 1, 0, 1);
+}
+
+    /* =============================================================
+  DOWNLOAD SECTION STYLES
+ ============================================================ */
+.board{
+   width: 100%;
+margin: 0px auto;
+}
+
+
+
+.board .tab-content span {
+    display:block;
+}
+.board .tab-content i {
+
+     margin-right: 15px;
+     margin-left: 15px;
+     font-style:normal;
+}
+
+
+
+
+
+
+
+/* 25% = 1/4 ~ 平分4組*/
+.nav-tabs > li {
+    width: 50%;
+}
+
+
+
+
+
+
+
+

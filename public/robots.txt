@@ -1,0 +1,7 @@
+
+Disallow: /signin
+Disallow: /keystone
+Disallow: /forgot-password
+Disallow: /reset-password
+Sitemap: http://meetugo.com/sitemap.xml
+Sitemap: http://meetugo.com/sitemap.html

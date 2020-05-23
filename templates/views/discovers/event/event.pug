@@ -1,0 +1,169 @@
+doctype html
+html(lang='en')
+  head
+    link(rel='shortcut icon', href='http://res.meetugo.com/img/favicon.ico')
+    meta(charset='UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1')
+    meta(name='description', itemprop='description', content='Events@MeetUGo')
+    meta(itemprop='name', content='Events@MeetUGo')
+    meta(itemprop='image', content='http://res.meetugo.com/img/logolarge.jpeg')
+    title Events@MeetUGo
+    link(href='http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.css', rel='stylesheet')
+    link(href='https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css', rel='stylesheet')
+    script(src="/js/jquery/jquery-1.11.3.min.js")
+     //-for nav buttom
+    link(href='/styles/navstyle.css', rel='stylesheet')
+    style.
+      a.list-group-item.active, a.list-group-item.active:hover, a.list-group-item.active:focus {
+      background-color: orange!important;
+      border-color: orange!important;
+      }
+    script.
+      var _hmt = _hmt || [];
+      (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0d26b429e7de67ec752769c8390751ae";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+      })();
+  body(style='background:#FFFAF4')
+    style(type='text/css').
+      ul{padding: 0;}
+      ol, ul {list-style: none;}
+      .posts-container .post-container{padding:10px;border:2px solid #F8F8F8;margin-bottom:-2px;padding-bottom:10px;}.posts-container .post-container .right-content{float:left;width:100%;}.posts-container .post-container .right-content img{position:absolute;}.posts-container .post-container .right-content .info-post ul li{margin-top:10px;float:left;}
+      .clear {clear: both;display: block;overflow: hidden;visibility: hidden;width: 0;height: 0;}
+    div
+      div(style='background:white;position:fixed;width: 100%;z-index:3; height: 50px')
+        div(style='width: 20px;margin-left:20px;padding-top:15px;float:left')
+          if !user
+            a(href='/', style='color:orange')
+              span
+                i.fa.fa-arrow-left(style='font-size:25px')
+          else
+            a(href='/discovers', style='color:orange')
+              i.fa.fa-arrow-left(style='font-size:25px ')
+        div(style='width: 20px;margin-right:20px;padding-top:15px;float:right')
+          a(href='/create/event', style='color:orange')
+            i.fa.fa-plus(style='font-size:25px')
+      div(style='background:#F8F8F8;position:fixed;width: 100%;z-index:2; height: 52px')
+      div(style='width: 100%;height: 52px')
+      div(style='position: relative; margin-left: auto;margin-right: auto;max-width: 800px;')
+        if data.cities.length
+          .col-md-3.col-md-push-9(style='word-wrap:break-word;')
+            h2 Locations
+            .list-group
+              a(href='/event', class=!data.city ? 'active' : false).list-group-item All Locations
+              each cit in data.cities
+               a(href='/event/' + cit.key, class=data.city && data.city.id == cit.id ? 'active' : false).list-group-item= cit.name
+        .posts-container.col-md-9.col-md-pull-3(style='padding:0')
+          div(style='height:10px')
+          a(href='/create/event')
+            .post-container(style='background: white')
+              .right-content
+                div(style='text-align:center')
+                  div(style='height:10px')
+                  button(style='background:red;color:white').btn + Share An Event
+                  div(style='height:10px')
+              .clear
+            div(style='height:10px')
+          each event in data.event
+            h4(style='color: black;margin-top:30px',class=event._.eventTime.format('YMMDD'),hidden) #{event._.eventTime.format('dddd, MMMM D')}
+            div(style='background:#FFFAF4;position: fixed;top:50px;color: black;width:100%;z-index:10;',class='fix'+event._id,hidden)
+              h4 #{event._.eventTime.format('dddd, MMMM D')}
+            div(style='background: white',class = 'post-container ' + event._id)
+              .right-content
+                div
+                  a(href='/event/eventinfo/' + event._id)
+                    if !user
+                      p(style='word-wrap:break-word;font-size:20px;color:#333333; font-weight:bold') #{event.eventTitle}
+                    else if !event.author
+                      p(style='word-wrap:break-word;font-size:20px;color:#333333; font-weight:bold')
+                          span(style='color:#00DE9E' class='oncalendar'+event.id,hidden)
+                            i.fa.fa-check-circle &nbsp
+                          span(style='color:#333333') #{event.eventTitle}
+                    else if event.author.toString() == user._id
+                      if event.state == 'published'
+                        p(style='word-wrap:break-word;font-size:20px;font-weight:bold')
+                          span(style='color:#00DE9E')
+                            i.fa.fa-check-circle
+                          span(style='color:#00DE9E') &nbsp(Event I Shared.) &nbsp
+                          span(style='color:red;') #{event.eventTitle}
+                      else
+                        p(style='word-wrap:break-word;font-size:20px;color:lightgray; font-weight:bold')
+                          span(style='color:#00DE9E')
+                            i.fa.fa-check-circle
+                          span &nbsp(Event I Shared, not publish yet.) &nbsp
+                          span #{event.eventTitle} (Event I Shared, not publish yet.)
+                    else
+                      p(style='word-wrap:break-word;font-size:20px;color:#333333; font-weight:bold;') #{event.eventTitle}
+                .info-post
+                  ul
+                    li
+                      i.fa.fa-clock-o(style='font-weight:bold;color:dimgray') &nbsp #{event._.eventTime.format('hh:mm a')} &nbsp
+                    li
+                      i.fa.fa-map-marker(style='font-weight:bold;color:#a1a1a1;')
+                        span(style='color:dimgray') &nbsp #{event.cities.name};
+                        if user
+                          span &nbsp #{event.eventAdress} &nbsp
+                        else
+                          span &nbsp
+                    if user
+                      if user.isAdmin
+                        li
+                          i.fa.fa-eye(style='font-weight:bold;color:#a1a1a1;') &nbsp #{event.pv} &nbsp
+                        if (user._id.toString() == '5ac8dd624982c0251a214a0d')
+                          li
+                            i.fa.fa-link(style='font-weight:bold;color:#a1a1a1;') &nbsp #{event.follower.length} &nbsp                   
+                    li
+                      i.fa.fa-group(style='font-weight:bold;color:#a1a1a1;') 
+                        if event.totalRSVPs > 0
+                          span &nbsp Go Meet 
+                          span(style='font-weight:bold') #{event.totalRSVPs} 
+                          span &nbsp Attendees &nbsp
+                        else
+                          span &nbsp No one attend yet &nbsp
+                  if event.eventTime < Date.now()
+                    button(style='background:lightgray;color:white;float:right').btn Ongoing Event                  
+                  else if user
+                    form(method='post',class='add'+ event.id)
+                      input(type='hidden', name='action', value='add')
+                      input(type='hidden', name='who', value=user._id)
+                      input(type='hidden', name='title', value=event.eventTitle)
+                      input(type='hidden', name='time', value=event.eventTime)
+                      input(type='hidden', name='location', value=event.eventAdress)
+                      input(type='hidden', name='description', value=event.eventIntroduction)
+                      input(type='hidden', name='class', value='Event')
+                      input(type='hidden', name='event', value=event._id)
+                      input(type='hidden', name='attending', value=true)
+                      .form-actions
+                        button(type='submit',style='background:orange;color:white;float:right').btn Add to my calendar
+                    a(class='oncalendar'+event.id,hidden,href='/event/eventinfo/' + event._id)
+                      button(style='background:#00DE9E;color:white;float:right').btn On my calendar
+                  else
+                    form(method='post')
+                      input(type='hidden', name='action', value='signin')
+                      button(style='background:orange;color:white;float:right').btn Signin to add on my calendar
+              .clear
+          div(style='height:200px')
+        each cal in mycalendar
+          if cal.event
+            script.
+              $(".add#{cal.event}").hide();
+            script.
+              $(".oncalendar#{cal.event}").show();            
+          else
+        each event in data.event
+          script.
+            $(".#{event._.eventTime.format('YMMDD')}").first().show();
+            var group#{event._id} = $(".#{event._id}");
+            $(window).scroll(function(){
+
+            var screenheight = $(this).scrollTop()+ 99;
+            var C#{event._id} = group#{event._id}.offset().top;
+            if(screenheight > C#{event._id}){
+            $(".#{"fix"+event._id}").show();
+            }
+            else{
+            $(".#{"fix"+event._id}").hide();
+            }
+            });

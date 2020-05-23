@@ -1,0 +1,8 @@
+if applySubmitted == true
+	p sucess
+else
+	form(method='post' ,enctype='multipart/form-data')
+		input(type='hidden', name='action', value='picture')
+		input(type='file', name='picture',value=formData.picture)
+		br
+		button(type='submit') upload

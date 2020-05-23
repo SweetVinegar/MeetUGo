@@ -1,0 +1,102 @@
+extends ../../../layouts/defaultlight
+
+block intro
+	div(style='background:orange;position:fixed;width: 100%;z-index:2; height: 50px')
+		div(style='width: 20px;padding-left:15px;padding-top:15px')
+			a(href='/event/manage/'+ data.edit._id, style='color:white ')
+				i.fa.fa-arrow-left(style='font-size:25px ')
+	div(style='height:60px')
+	if !user
+	else if !data.edit
+		.container.panel(style='background:orange;height:70px;margin-bottom:-5px')
+			h3(style='text-align:center;color:white') Not My Event
+	else if data.edit.author.toString() == user.toString()
+		if toremove == false
+			.container.panel(style='background:orange;margin-bottom:-5px')
+				h3(style='text-align:center;color:white') Edit Event
+		else
+	else
+		p We don't know what happend.
+block content
+	if !user
+	else if !data.edit
+	else if data.edit.author.toString() == user.toString()
+		if locals.data.edit
+			if toremove == true
+				.container.panel(style='background:orange;margin-bottom:0px')
+					h3(style='text-align:center;color:white') Delete this schedule from the calendar?
+				.container.panel(style='text-align:center;border-color:orange') 
+					h3 Waring! Can't undo this after deleting.
+					.panel-body 
+						.col-md-4
+							form(method='post')
+								input(type='hidden', name='remove', value='delete')
+								button(type='submit',style='background:lightgray;color:white;float:left' ).btn Yes, delete
+							a(href='#' onClick='javascript :history.back(-1);')
+								button(style='background:orange;color:white;float:right').btn No, don't delete
+			else
+				.container.panel(style='border-color:orange')
+					.row: .col-sm-8.col-md-6
+						form(method='post')
+							input(type='hidden', name='action', value='apply')
+							.form-group(class=validationErrors.eventTitle ? 'has-error' : null)
+								label Title* (
+									span(style='color:red') Waring! Change the title will change the event link, 
+									span if you already spread the link into other channels, try not to change the title!)
+								input(type='text', name='eventTitle', value=data.edit.eventTitle).form-control
+							.form-group(class=validationErrors.freeEvent ? 'has-error' : null)
+								label Is the event free?*
+								select(name='freeEvent').form-control
+									option(value='') (select one)
+									each type in freeEvents
+										option(value=type.value, selected=data.edit.freeEvent == type.value)= type.label
+							.form-group(class=validationErrors.cities ? 'has-error' : null)
+								label Which City?*
+								select(name='cities').form-control
+									option(value='') (select one)
+									each cit in datacit.cities
+										option(value=cit.id,selected=data.edit.cities == cit.id)= cit.name
+							.form-group(class=validationErrors.ticketLink ? 'has-error' : null)
+								label Ticket Link*
+								input(type='url', name='ticketLink', value=data.edit.ticketLink).form-control
+							.form-group(class=validationErrors.eventTime ? 'has-error' : null)
+								label Time*
+								input#eventTime(type='text', name='eventTime',value=data.edit._.eventTime.format('Y-MM-DD hh:mm:ss a')).form-control
+							.form-group(class=validationErrors.ticketAdress ? 'has-error' : null)
+								label Adress*
+								input(type='text', name='eventAdress', value=data.edit.eventAdress).form-control
+							.form-group(class=validationErrors.eventEmail ? 'has-error' : null)
+								label Email*
+								input(type='email', name='eventEmail', value=data.edit.eventEmail).form-control
+							.form-group(class=validationErrors.eventIntroduction ? 'has-error' : null)
+								label Brief Introduction*
+								input(type='html', name='eventIntroduction', value=data.edit.eventIntroduction).form-control
+							.form-group(class=validationErrors.class ? 'has-error' : null)
+								label Public? (Need to wait to be confirmed.)
+								select(name='state').form-control
+									option(value='apply', selected = 'apply') Public
+									option(value='hidden', selected = 'hidden') Hidden
+									option(value=data.edit.state, selected = data.edit.state) #{data.edit.state}
+							.form-actions
+								button(style='background:orange;color:white;float:right', type='submit').btn Save
+						a(href='')
+							button(style='background:lightgray;color:white').btn Reset
+						form(method='get')
+							input(type='hidden', name='action', value='toremove')
+							br
+							.form-actions
+								button(type='submit',style='background:lightgray;color:white').btn Remove
+								div(style='height:10px')
+							link(href='/styles/jquery/jquery-ui-1.12.1.min.css', rel='stylesheet')
+							script(src='/js/jquery/jquery-3.3.1.js')
+							script(src='/js/jquery/jquery-ui-1.12.1.min.js')
+							link(rel='stylesheet', media='all', type='text/css', href='/styles/jquery/jquery-ui-timepicker-addon-1.6.3.css')
+							script(src='/js/jquery/jquery-ui-timepicker-addon-1.6.3.js')
+							script.
+								$("#eventTime").datetimepicker({controlType: 'select',oneLine: true, dateFormat:'yy-mm-dd',timeFormat: 'hh:mm:ss tt',});
+		else
+				h3 You're not the author for this event, or event does not exist.
+				a(href='/signin')
+					h3 signin if you're the author.
+	else
+		p don't know what happend

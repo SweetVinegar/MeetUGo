@@ -1,0 +1,13 @@
+scp -i "meetugo2018.pem" /Users/Huanry/Desktop/keystone/event/meetugo1/templates/views/calendar/calendar.pug ubuntu@ec2-13-231-29-240.ap-northeast-1.compute.amazonaws.com:/home/ubuntu/2019320/templates/views/discovers/calendar
+
+scp -i "meetugo2018.pem" /Users/Huanry/Desktop/keystone/event/meetugo1/models/Event.js ubuntu@ec2-13-231-29-240.ap-northeast-1.compute.amazonaws.com:/home/ubuntu/2019320/models/
+
+
+scp -i "meetugo2018.pem" /Users/Huanry/Desktop/keystone/event/meetugo1/routes/views/discovers/event/eventinfo.js ubuntu@ec2-13-231-29-240.ap-northeast-1.compute.amazonaws.com:/home/ubuntu/2019320/routes/views/discovers/event
+
+
+
+scp -i "meetugo2018.pem" /Users/Huanry/Desktop/keystone/event/meetugo1/public/robots.txt ubuntu@ec2-13-231-29-240.ap-northeast-1.compute.amazonaws.com:/home/ubuntu/2019320/public
+
+
+scp -i "meetugo2018.pem" /Users/Huanry/Desktop/keystone/event/meetugo1/templates/layouts/header.pug ubuntu@ec2-13-231-29-240.ap-northeast-1.compute.amazonaws.com:/home/ubuntu/2019320/templates/layouts

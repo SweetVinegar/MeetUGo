@@ -1,0 +1,45 @@
+extends ../../layouts/defaultlight
+
+//-block flash-messages
+	//- intentionally blank
+block intro
+		div(style='background:orange;position:fixed;width: 100%;z-index:20; height: 50px')
+			div(style='width: 20px;padding-left:15px;padding-top:15px')
+				a(href='#' onClick='javaScript:history.back(-1)', style='color:white ')
+					i.fa.fa-arrow-left(style='font-size:25px ')
+		div(style='height:60px')
+
+	
+block content
+	.container(style='margin-top:20px')
+		.panel(style='border-color:orange')
+			.panel(style='background:orange;height:70px')
+				h3(style='color:white;text-align:center') Create An Account At MeetUGo
+			.panel-body
+				.col-md-6
+					form.form-horizontal(method='post')
+						fieldset
+							.form-group
+								label.col-md-4.control-label First Name*
+								.col-md-8
+									input(placeholder='First name', name='firstname', type='text', value=form.firstname).form-control
+							.form-group
+								label.col-md-4.control-label Last Name*
+								.col-md-8
+									input(placeholder='Last name', name='lastname', type='text', value=form.lastname).form-control
+							.form-group
+								label.col-md-4.control-label Email Address*
+								.col-md-8
+									input(placeholder='Email address', name='email', type='email', value=form.email).form-control
+							.form-group
+								label.col-md-4.control-label Password*
+								.col-md-8
+									input(name='password', placeholder='password', type='password',value=form.password).form-control
+							.form-group
+								label.col-md-4.control-label
+								.col-md-8
+									div(style='clear:both')
+									button.btn(style='background:orange;color:white')(type='submit') Join
+									br
+									br
+									a(href='/signin' style='color:black') Already Have An Account, Signin Here!

@@ -1,0 +1,119 @@
+extends ../../../layouts/defaultlight
+
+block intro
+  div(style='background:orange;position:fixed;width: 100%;z-index:2; height: 50px')
+    div(style='width: 20px;padding-left:15px;padding-top:15px')
+      a(href='/event', style='color:white ')
+        i.fa.fa-arrow-left(style='font-size:25px ')
+  div(style='height:50px')
+  .container
+    h1 Post Event
+    
+block content
+  .container
+    if applySubmitted
+    else
+      h1 I Already RSVP the Event "#{data.event.eventTitle}": #{rsvpStatus.iRsvped}
+      h5 rsvpStatus.iRsvped #{rsvpStatus.iRsvped}
+      h5 rsvpStatus.iAttending #{rsvpStatus.iAttending}
+      .row: .col-sm-8.col-md-6
+      if !user
+        h2 Signin to RSVP
+      else 
+        if rsvpStatus.iRsvped == true
+          if rsvpStatus.iAttending == false
+            form(method='post')
+              input(type='hidden', name='action', value='attend')
+              .form-actions
+                button(type='submit').btn.btn-primary Attend
+          else
+            form(method='post')
+              input(type='hidden', name='remove', value='delete')
+              .form-actions
+              button(type='submit').btn.btn-primary Delete RSVP
+        else
+          form(method='post')
+            input(type='hidden', name='action', value='rsvp')
+            .form-group
+              input(type='hidden', name='event', value = data.event.id).form-control
+            .form-group
+              input(type='hidden', name='who', value = user.id).form-control
+            .form-actions
+              button(type='submit').btn.btn-primary RSVP
+    link(href='/styles/jquery/jquery-ui-1.12.1.min.css', rel='stylesheet')
+    script(src='/js/jquery/jquery-3.3.1.js')
+    script(src='/js/jquery/jquery-ui-1.12.1.min.js')
+    link(rel='stylesheet', media='all', type='text/css', href='/styles/jquery/jquery-ui-timepicker-addon-1.6.3.css')
+    script(src='/js/jquery/jquery-ui-timepicker-addon-1.6.3.js')
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//- INTRO
+//-block intro
+
+  //- HERO
+  if applySubmitted
+    h2.text-center Got it
+  else
+    article#hero.hero-meetup.hero-meetup--next     
+      //- Intro
+      section.hero-intro.hero-intro--hasmask
+        .hero-background
+          //-img(src='/images/placeholders/sydney-1.jpg')
+        .hero-intro-content
+          p.byline: strong #{data.event._.eventTime.format('ddd, DD MMM YYYY')}
+          p.byline #{data.event.eventAdress} &#8212;
+          p #{data.event.eventAdress}
+          p #{data.rsvp}
+          p I already RSVP: #{rsvpStatus.iRsvped}
+          p I'll Attend: #{rsvpStatus.iAttending}
+    form(method='post')
+      input(type='hidden', name='action', value='attend')
+      .form-group
+        label Event
+        input(type='text', name='event', value=data.event._id).form-control
+      .form-group
+        label Go
+            select(name='attending').form-control
+              option(value='') (select one)
+                option(value= true,selected=true)
+                option(value= false,selected=false)
+      .form-group
+        label Who
+        input(type='text', name='who', value = user._id).form-control      
+      .form-actions
+        button(type='submit').btn.btn-primary RSVP

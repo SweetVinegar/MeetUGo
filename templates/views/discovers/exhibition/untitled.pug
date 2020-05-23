@@ -1,0 +1,334 @@
+doctype html
+html(lang='en')
+	head
+		include ../../../layouts/header.pug
+		meta(name='description', itemprop='description', content=data.exhinfo._.open.format('ddd,MMMD') +'~'+data.exhinfo._.end.format('ddd,MMMD')+':'+data.exhinfo.title)
+		meta(itemprop='name', content=data.exhinfo._.exhibitionTime.format('ddd,MMMD') +':'+data.exhinfo.exhibitionTitle)
+		title #{data.exhinfo._.exhibitionTime.format('ddd,MMMD') +':'+data.exhinfo.exhibitionTitle}
+		link(rel='stylesheet', href='/styles/main1119.css')
+		link(rel='stylesheet', href='http://cache.amap.com/lbs/static/main.css?v=1.0')
+		link(href='/styles/exhibitionbutton.css', rel='stylesheet')
+		link(href='/styles/bootstrap/bootstrap-datetimepicker.css', rel='stylesheet')
+		script(src='/js/moment-with-locales.js')
+		script(src='/js/bootstrap/bootstrap-datetimepicker.js')
+		body(style='background:#FFFAF4')
+			style(type='text/css').
+				ul{padding: 0;}
+				ol, ul {list-style: none;}
+				.posts-container .post-container{padding:10px;border:2px solid #F8F8F8;margin-bottom:-2px;padding-bottom:10px;}.posts-container .post-container .right-content{float:left;width:100%;}.posts-container .post-container .right-content img{position:absolute;}.posts-container .post-container .right-content .info-post ul li{margin-top:10px;float:left;}
+				.clear {clear: both;display: block;overflow: hidden;visibility: hidden;width: 0;height: 0;}
+			div(style='background:white;position:fixed;width: 100%;z-index:20; height: 50px')
+				div(style='width: 20px;margin-left:20px;padding-top:15px;float:left')
+					if ((showmap == false) && (applylink == false))
+						if (locals.showlink == true)
+							a(href='#' onClick='javaScript:history.go(-1)', style='color:orange ')
+								i.fa.fa-arrow-left(style='font-size:25px')
+						else
+							a(href='../', style='color:orange ')
+								i.fa.fa-arrow-left(style='font-size:25px')
+					else
+						if (locals.showlink == true)
+							a(href='../exhinfo/'+filters.exhinfo, style='color:orange ')
+								i.fa.fa-arrow-left(style='font-size:25px')
+						else
+							a(href='#' onClick='javaScript:history.go(-1)', style='color:orange ')
+								i.fa.fa-arrow-left(style='font-size:25px')
+				div(style='width: 20px;margin-right:20px;padding-top:15px;float:right')
+					if ((showmap == false) && (applylink == false))
+						if (locals.showlink == true)
+							a(href=data.exhinfo.ticketLink, style='color:orange',target="_blank")
+								i.fa.fa-share(style='font-size:25px')
+						else
+							a(href='/create/exhibition', style='color:orange')
+								i.fa.fa-plus(style='font-size:25px')
+					else
+						if (locals.showlink == true)
+							a(href=data.exhinfo.ticketLink, style='color:orange',target="_blank")
+								i.fa.fa-share(style='font-size:25px')
+						else
+			div(style='background:#F8F8F8;position:fixed;width: 100%;z-index:2; height: 52px')
+			div(style='width: 100%;height: 52px')
+			if (locals.applylink == false)
+			  div(style='position: relative; margin-left: auto;margin-right: auto;max-width: 720px;')
+			    if showmap == false
+			      div
+			        div(style='border: 0px none; padding: 0px;', data-color='rgb(255, 129, 36)', data-custom='rgb(255, 129, 36)')
+			          div(style='margin: 5px; border: 1px solid #ff8124; text-align: center;')
+			            div(style='padding: 0px; text-align:left; margin: 0px auto; color: #ffffff;background-color: black;')
+			              if data.exhinfo.author
+			                if user
+			                  if data.exhinfo.author.toString() == user._id
+			                    a(href='/myexhibition')
+			                      button(style='background:red;color:white;float:right;margin-top:10px;margin-right:10px', type='submit').btn Manage
+			              div(style='margin: 10px; display: inline-block; padding: 5px; color: inherit;')
+			                h3(style='font-family: "comic sans ms"') #{data.exhinfo.exhibitionTitle}
+			            div(style='max-width: 100%; margin: 0.5em; text-align: center;')
+			              div(style='display: inline-block; font-weight: bold; padding: 0px 50px; background-color:#ff8124;border: 3px solid orange')
+			                span(style='color:#ffffff')
+			                  h3(style='font-family:微软雅黑') #{data.exhinfo._.exhibitionTime.format('MMMM D, YYYY')}, #{data.exhinfo.cities.name}
+			                  h4(style='font-family:微软雅黑') #{data.exhinfo.exhibitionTime}
+			            div(data-style='font-size: 14px; color: rgb(127, 127, 127); font-family: inherit;', style='text-align:justy;padding: 5px 10px 15px;text-align: justify;')
+			              if !user
+			                form(method='post' align='center')
+			                  input(type='hidden', name='action', value='signin')
+			                  .form-actions
+			                    button(type='submit',style='background:red;color:white;').btn Sign in for more informations
+			              else
+			                p(style='text-align: center;font-size: 20px;color:#333333;font-family:微软雅黑') #{data.exhinfo.exhibitionAdress}
+			            div
+			              div(style='position:relative; margin-left: auto;margin-right: auto;max-width: 500px;width: 90%')
+			                  if data.exhinfo.flyer.filename !== undefined
+			                    div(style='height:0px')
+			                    img(src='http://res.meetugo.com/pics/'+ data.exhinfo.flyer.filename, style='width:90%')
+			                  div(style='height:0px')
+			                  if data.exhinfo.exhibitionIntroduction
+			                    h3 Introduction
+			                    div(style='text-align:left;font-size:20px;font-family: "comic sans ms";;word-wrap:break-word') 
+			                      != data.exhinfo.exhibitionIntroduction
+			                  if data.exhinfo.exhibitionEmail
+			                      hr
+			                      a(href='mailto:'+data.exhinfo.exhibitionEmail style='text-decoration:none;color:#333333')
+			                          h3 Contact Email
+			                          p #{data.exhinfo.exhibitionEmail}
+			                  else
+			                  hr
+			                  if data.attendees
+			                    if data.attendees.length >0
+			                      h3 Who will attend
+			                      h4
+			                        each attendee in data.attendees
+			                          div
+			                            span
+			                              if attendee.who
+			                                a(href='/mycalendar/'+attendee.who._id)
+			                                  if attendee.who.profilePic.filename
+			                                    img(src='http://res.meetugo.com/pics/user/'+ attendee.who.profilePic.filename, style='border:solid 2px orange;height:50px;width:50px;border-radius:100%; overflow:hidden')
+			                                  else
+			                                    i.fa.fa-user-o(style='color:#333333')
+			                                  span(style='color:#333333')  #{attendee.who.name.first} #{attendee.who.name.last};&nbsp
+			                              else
+			                    else
+			                      p On no one&#8217s schedule yet
+			                  else
+			                    h3 On no one&#8217s schedule yet
+			                  hr
+			              if data.exhinfo.exhibitionAdress
+			                  p Map from Chinese adress( for reference only)
+			                  form(method='get' style='margin-bottom:10px')
+			                    input(type='hidden', name='action', value='showmap')
+			                    .form-actions
+			                    button(type='submit',style='background:orange;color:white').btn show map
+			            -var link = "http://meetugo.com/exhibition/exhinfo/" + filters.exhinfo
+			    else
+			      script(type='text/javascript', src='http://webapi.amap.com/maps?v=1.4.6&key=954c866f0ab8be5f3b37cd2e37361687')
+			      script(type='text/javascript', src='http://cache.amap.com/lbs/static/addToolbar.js')
+			      div(style='height:720px')
+			        #containermap
+			        #panel
+			        script(type='text/javascript').
+			          var map = new AMap.Map("containermap", {
+			          resizeEnable: true
+			          });
+			          AMap.service(["AMap.PlaceSearch"], function() {
+			          var placeSearch = new AMap.PlaceSearch({ //构造地点查询类
+			          pageSize: 1,
+			          pageIndex: 1,
+			          city: "#{data.exhinfo.cities.name}", //城市
+			          map: map,
+			          panel: "panel"
+			          });
+			          //关键字查询
+			          placeSearch.search('#{data.exhinfo.exhibitionAdress}');
+			          });
+			          map.setLang('en');
+			      div(style='height:20px')
+			  if showmap == false
+			    center
+			      .bdsharebuttonbox
+			        a.bds_more(href='#', data-cmd='more')
+			      script.
+			        window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdPic":"","bdStyle":"0","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+			        div(style='background:#F8F8F8;height: 2px')
+			    div(style='height:100px')
+			    if data.exhinfo.exhibitionTime < Date.now()
+			      .board.putbottom(style='background:lightgray;z-index:20')
+			        div
+			          ul.nav.nav-tabs
+			            if data.exhinfo.ticketLink
+			              -var mbtp = ';'
+			              li(style='background:white')
+			                a(href=data.exhinfo.ticketLink)
+			                  h4(style="text-align:center;color:black")
+			                    strong exhibition details
+			            else
+			              -var mbtp = ';margin-bottom:21px'
+			            if data.exhinfo.exhibitionTime < (Date.now()-86400000)
+			                div(style='text-align:center;background:lightgray;margin-top:21px'+mbtp)
+			                  h4(style='text-align:center;color:white')
+			                    strong Past exhibition
+			            else
+			                div(style='text-align:center;background:lightgray;margin-top:21px'+mbtp)
+			                  h4(style='text-align:center;color:white')
+			                    strong Ongoing exhibition
+			    else 
+			      .board.putbottom(style='background:orange;z-index:20')
+			        if !user
+			          div(style='background:orange;text-align:center;')
+			            form(method='post')
+			              input(type='hidden', name='action', value='signin')
+			              button(style='background:orange;width:100%')
+			                h3(style='text-align:center;color:white')
+			                  strong Check informations
+			        else
+			          div
+			            ul.nav.nav-tabs
+			              if data.exhinfo.ticketLink
+			                -var bottonwidth = ';width:50%'
+			                li(style='background:white')
+			                  if data.exhinfo.follower
+			                    if (data.exhinfo.follower.indexOf(user._id)!=(-1))
+			                      form(method='get')
+			                        input(type='hidden', name='action', value='showlink')
+			                        button(type='submit',style='background:#00FFFF;height:61px;border:0;width:100%')
+			                          h4(style="text-align:center;color:white")
+			                            strong Check Link
+			                    else if data.exhinfo.author
+			                      if (data.exhinfo.author.toString()==user._id)
+			                        form(method='get')
+			                          input(type='hidden', name='action', value='showlink')
+			                          button(type='submit',style='background:#00FFFF;height:61px;border:0;width:100%')
+			                            h4(style="text-align:center;color:white")
+			                              strong Check Link
+			                      else
+			                        form(method='get')
+			                          input(type='hidden', name='action', value='applylink')
+			                          button(type='submit',style='background:red;height:61px;border:0;width:100%')
+			                            h4(style="text-align:center;color:white")
+			                              strong Buy ticket                            
+			                    else
+			                      form(method='get')
+			                        input(type='hidden', name='action', value='applylink')
+			                        button(type='submit',style='background:red;height:61px;border:0;width:100%')
+			                          h4(style="text-align:center;color:white")
+			                            strong Buy ticket
+			                  else
+			                    form(method='get')
+			                      input(type='hidden', name='action', value='applylink')
+			                      button(type='submit',style='background:red;height:61px;border:0;width:100%')
+			                        h4(style="text-align:center;color:white")
+			                          strong Buy ticket
+			              else
+			                -var bottonwidth = ';width:100%'
+			              if rsvpStatus.iRsvped == true
+			                form(method='get')
+			                  input(type='hidden', name='remove', value='delete')
+			                  button(type='submit',style='height:61px;background:#00FFCC;color:white;border:0'+bottonwidth)
+			                    li
+			                      if data.exhinfo.rsvpOnMeetUGo
+			                        if (data.exhinfo.freeexhibition.toString() == "Free" )
+			                          h4(style="text-align:center;color:white")
+			                            strong RSVP&prime;d
+			                        else
+			                          h4(style="text-align:center;color:white")
+			                            strong On my calenda
+			                      else
+			                        h4(style="text-align:center;color:white")
+			                          strong On my calendar
+			              else
+			                form(method='post')
+			                  input(type='hidden', name='action', value='rsvp')
+			                  input(type='hidden', name='who', value=user._id)
+			                  input(type='hidden', name='title', value=data.exhinfo.exhibitionTitle)
+			                  input(type='hidden', name='time', value=data.exhinfo.exhibitionTime)
+			                  input(type='hidden', name='location', value=data.exhinfo.exhibitionAdress)
+			                  input(type='hidden', name='description', value=data.exhinfo.exhibitionIntroduction)
+			                  input(type='hidden', name='class', value='exhibition')
+			                  input(type='hidden', name='exhibition', value=data.exhinfo._id)
+			                  input(type='hidden', name='attending', value=true)
+			                  button(type='submit',style='background:orange;height:61px;white;border:0'+bottonwidth)
+			                    li
+			                        if data.exhinfo.rsvpOnMeetUGo
+			                          if (data.exhinfo.freeexhibition.toString() == "Free")
+			                            h4(style="text-align:center;color:white")
+			                              strong RSVP
+			                          else
+			                            h4(style="text-align:center;color:white")
+			                              strong Schedule it                                
+			                        else
+			                          h4(style="text-align:center;color:white")
+			                            strong Schedule it
+			else if showlink == false
+			  if user
+			    if user.countryCode
+			      -var countryCode = user.countryCode
+			    else
+			      -var countryCode = 'country code'
+			    if user.phone
+			      -var phone = user.phone
+			    else
+			      -var phone = 'phone'
+			    if user.contactEmail
+			      -var email = user.contactEmail
+			    else
+			      -var email = user.email
+			    if user.company
+			      -var company = user.company
+			    else
+			      -var company = ''
+			    if user.position
+			      -var position = user.position
+			    else
+			      -var position = ''
+			    div(style='height:10px')
+			    .container.panel(style='border-color:#F8F8F8;max-width: 580px;')
+			      h4 Leave your information to check the exhibition link.
+			      hr
+			      form(method='post')
+			        input(type='hidden', name='action', value='showlink')
+			        h4 Name
+			        .col-xs-6: input(type='text', name='name.first' value = user.name.first,required).form-control
+			        .col-xs-6: input(type='text', name='name.last' value = user.name.last,required).form-control
+			        h4(style='padding-top:50px') Mobile
+			        .col-xs-4: input(type='text', name='countryCode', value = countryCode, pattern='^[0-9]*[1-9][0-9]*$',required).form-control
+			        .col-xs-8: input(type='text', name='phone' value = phone, pattern='^[0-9]*[1-9][0-9]*$', required).form-control
+			        h4(style='padding-top:50px') Contact Email
+			        input(type='email', name='contactEmail' value= email,required).form-control
+			        h4 Company
+			        input(type='text', name='company' value=company,required).form-control
+			        h4 Position
+			        input(type='text', name='position' value= position,required).form-control
+			        div(style='height:10px')
+			        .form-actions
+			          button(type='submit',style='background:orange;color:white;float:right').btn Check the official exhibition link
+			        div(style='height:50px')
+			  else
+			    iframe(src=data.exhinfo.ticketLink , style='width:100%;height:100%')
+			else
+			  iframe(src=data.exhinfo.ticketLink , style='width:100%;height:100%')
+
+
+			//ggg
+				div
+					p #{data.exhinfo.open}
+					p #{(new Date(data.exhinfo.open)).valueOf()}
+				.col-md-9(role='main')
+					h3#linked-pickers Picker
+					.container
+					.col-md-5
+						.form-group
+							#timepicker.input-group.date
+								input.form-control(type='text')
+								span.input-group-addon
+									span.glyphicon.glyphicon-calendar
+					script(type='text/javascript').
+						$(function () {
+						var open = #{((new Date(data.exhinfo.open)).valueOf())};
+						var now = #{Date.now()};
+						if(open > now){var start = open} else{var start = now};
+						$('#timepicker').datetimepicker({
+						useCurrent: false,
+						stepping:5,format:'YYYY-MM-DD HH:mm a',
+						minDate: (start),
+						maxDate: (#{(new Date(data.exhinfo.end)).valueOf()})
+						})
+						})

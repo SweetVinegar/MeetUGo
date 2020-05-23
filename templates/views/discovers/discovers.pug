@@ -1,0 +1,111 @@
+doctype html
+html(xmlns='http://www.w3.org/1999/xhtml')
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1')
+    meta(name='description', content='MeetUGo - Meet Your New Friende via Offlinne Scenarios')
+    meta(name='author', content='MeetUGo - Meet Your New Friende via Offlinne Scenarios')
+    meta(itemprop='image', content='http://res.meetugo.com/img/logo.jpeg')
+    //if IE
+      meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
+    link(rel='shortcut icon', href='http://res.meetugo.com/img/favicon.ico')
+    title MeetUGo
+    // BOOTSTRAP CORE STYLE CSS
+    link(href='http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.css', rel='stylesheet')
+    // FONT AWESOME CSS
+    link(href='https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css', rel='stylesheet')
+    link(href='/styles/navstyle.css', rel='stylesheet')
+    script.
+      var _hmt = _hmt || [];
+      (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0d26b429e7de67ec752769c8390751ae";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+      })();
+  body(style='background: #FFFAF4')
+    style(type='text/css').
+      ul{padding: 0;}
+      ol, ul {list-style: none;}
+      .posts-container .post-container{padding:10px;border:2px solid #F8F8F8;margin-bottom:-2px;padding-bottom:10px;overflow:auto}.posts-container .post-container .right-content{float:left;width:100%;}.posts-container .post-container .right-content img{position:absolute;}.posts-container .post-container .right-content .info-post ul li{margin-top:5px;float:left;}.clear {clear: both;display: block;overflow: hidden;visibility: hidden;width: 0;height: 0;}
+    div
+      div(style='background:white;position:fixed;width: 100%;z-index:3; height: 50px')
+        div(style='width: 20px;margin-left:10px;padding-top:15px;float:left')
+          p(style='color:orange; font-weight:bold ') Discover
+    div(style='height: 50px')
+            //-i.fa.fa-arrow-left(style='font-size:25px ')
+    div(style='position: relative; margin-left: auto;margin-right: auto;max-width: 600px;')
+      div(style='height:100px' class='hidden-xs hidden-sm')
+      .posts-container(style='padding:0')
+        .post-container(style='background: white')
+          .right-content
+            div
+              a(href='/event')
+                span
+                  i.fa.fa-group.fa-2x(style='border-radius: 100%;display: inline-block; height: 2em;line-height: 2em;width: 2em;background:red;color:white;padding-left:14px')
+                span(style='color:#333333;font-weight:bold;font-size:20px;padding-left:10px') Events
+          .clear
+      .posts-container(style='padding:0')
+        .post-container(style='background: white')
+          .right-content
+            div
+              a(href='/exhibition')
+                span
+                  i.fa.fa-paint-brush.fa-2x(style='border-radius: 100%;display: inline-block; height: 2em;line-height: 2em;width: 2em;background:red;color:white;padding-left:14px')
+                span(style='color:#333333;font-weight:bold;font-size:20px;padding-left:10px') Exhibitions
+          .clear
+      .posts-container(style='padding:0')
+        .post-container(style='background: white')
+          .right-content
+            div
+              a(href='https://mp.weixin.qq.com/s/5ut0fk69bZLh_Pc4nZxeOw')
+                span
+                  i.fa.fa-th-list.fa-2x(style='border-radius: 100%;display: inline-block; height: 2em;line-height: 2em;width: 2em;background:red;color:white;padding-left:14px')
+                span(style='color:#333333;font-weight:bold;font-size:20px;padding-left:10px') Services (Shanghai)
+          .clear
+      div(style='height:10px')
+      .posts-container(style='padding:0')
+        .post-container(style='background: white')
+          .right-content
+            div
+              a(href='/discover')
+                span
+                  i.fa.fa-compass.fa-2x(style='border-radius: 100%;display: inline-block; height: 2em;line-height: 2em;width: 2em;background:blue;color:white;padding-left:16px')
+                span(style='color:#333333;font-weight:bold;font-size:20px;padding-left:10px') More Discoveries
+          .clear
+      div(style='height:130px')
+    .col-md-12.col-sm-12(style='padding-right:0px!important;padding-left:0px!important;')
+      .board.putbottom(style='background:white')
+        div(style='background:#F8F8F8;height: 2px')
+        div
+          ul.nav.nav-tabs
+            li
+              a(href='/')
+                span.round-tabs.one
+                  i.fa.fa-calendar
+                  h5 Calendar
+              br
+            li
+              a(href='/contact')
+                span.round-tabs.one
+                  i.fa.fa-users
+                  h5 Contacts
+              br
+            li
+              a(href='/create/event')
+                span.round-tabs.one(style='background:transparent!important;border:2px;color:black')
+                  i.fa.fa-plus.fa-x
+                  h5 Post
+              br
+            li.active
+              a(href='/discovers', data-toggle='tab')
+                span.round-tabs.one
+                  i.fa.fa-compass
+                  h5 Discover
+              br
+            li
+              a(href='/setting')
+                span.round-tabs.one
+                  i.fa.fa-cog
+                  h5 Setting
+              br

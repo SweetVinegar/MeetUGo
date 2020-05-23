@@ -1,0 +1,123 @@
+doctype html
+html(lang='en')
+	head
+		link(rel='shortcut icon', href='http://res.meetugo.com/img/favicon.ico')
+		meta(charset='UTF-8')
+		meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1')
+		meta(itemprop='image', content='http://res.meetugo.com/img/logolarge.jpeg')
+		link(href='http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.css', rel='stylesheet')
+		link(href='https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css', rel='stylesheet')
+		link(href='/styles/navstyle.css', rel='stylesheet')
+		script(src="/js/jquery/jquery-1.11.3.min.js")
+		style.
+			a.list-group-item.active, a.list-group-item.active:hover, a.list-group-item.active:focus {background-color: orange!important;border-color: orange!important;}
+		script.
+			var _hmt = _hmt || [];(function() {var hm = document.createElement("script");hm.src = "https://hm.baidu.com/hm.js?0d26b429e7de67ec752769c8390751ae";var s = document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm, s);})();
+	body(style='background:#FFFAF4')
+		style(type='text/css').
+			ul{padding: 0;}
+			ol, ul {list-style: none;}
+			.posts-container .post-container{padding:10px;border:2px solid #F8F8F8;margin-bottom:-2px;padding-bottom:10px;overflow:auto}.posts-container .post-container .right-content{float:left;width:100%;}.posts-container .post-container .right-content img{position:absolute;}.posts-container .post-container .right-content .info-post ul li{margin-top:5px;float:left;}.clear {clear: both;display: block;overflow: hidden;visibility: hidden;width: 0;height: 0;}
+		div
+			div(style='background:white;position:fixed;width: 100%;z-index:3; height: 50px')
+				div(style='margin-left:10px;float:left;font-size:20px')
+					a(href='/contact')
+						span
+							i.fa.fa-arrow-left(style='font-weight:bold; color:orange;padding-top:15px;')
+						span(style='color:orange; font-weight:bold') &nbsp Back
+			div(style='background:#F8F8F8;position:fixed;width: 100%;z-index:2; height: 52px')
+			div(style='background:orange;width: 100%;height: 50px')
+			div(style='position: relative; margin-left: auto;margin-right: auto;max-width: 600px;')
+				if !searchuser
+					h3(style='margin-left:5px') search user email
+					form(method ='post').form-horizontal
+						input(type='hidden', name='action', value='searchuser')
+						.form-group
+							input(type='email', name='email', value='Email',style='margin-left:20px').form-control
+						button(type='submit', style='background:orange;color:white;margin-left:5px').btn search friend
+				else
+					if	!userexist
+						if !alreadysend
+							h4 User not exist, invite to join!
+								.posts-container(style='padding:0')
+									.post-container(style='background: white')
+										h4(style='color:#333333') Sent Email to #{searchmail}
+										.right-content
+											div(style='text-align:center')
+												form(method ='post')
+													input(type='hidden', name='action', value = 'sentmail')
+													input(type='hidden', name='invitemail', value = searchmail)
+													button(type='submit',style='background:orange;color:white').btn Invite
+									.post-container(style='background: white')
+										h4(style='color:#333333') Click here for invitation page
+										.right-content
+											div(style='text-align:center')
+												a(href='/addme/'+user._id)
+													button(type='submit',style='background:orange;color:white').btn Invitation page
+							a(href='/contact/addfriend')
+								h5(style='color:black') < Back
+						else
+							h4 invitation mail send
+							a(href='/contact/addfriend')
+								button(type='submit',style='background:orange;color:white').btn Go back
+					else
+						if !followed
+							if !befollowed
+								h4 You are not friends yet.
+								.posts-container(style='padding:0')
+									.post-container(style='background: white')
+										h4(style='color:#333333') Sent #{searchuserdata.name.first} #{searchuserdata.name.last} friend request
+										.right-content
+											div(style='text-align:center')
+												form(method ='post')
+													input(type='hidden', name='action', value = 'friendrequest')
+													input(type='hidden', name='friends', value = searchuserdata.id)
+													button(type='submit',style='background:orange;color:white').btn Add
+							else
+								if addrequest
+									h4 You already add #{addname} as a friend
+									.posts-container(style='padding:0')
+										.post-container(style='background: white')
+											h4(style='color:#333333') Back to contact list
+											.right-content
+												div(style='text-align:center')
+													a(href='/contact')
+														button(type='submit',style='background:orange;color:white').btn Back
+								else
+									h4 #{searchuserdata.name.first} arleady sent you friend invitation
+									.posts-container(style='padding:0')
+										.post-container(style='background: white')
+											h4(style='color:#333333') Add #{searchuserdata.name.first} #{searchuserdata.name.last} as a friend
+											.right-content
+												div(style='text-align:center')
+													form(method='post')
+														input(type='hidden', name='action', value='add')
+														input(type='hidden', name='_id', value = searchuserdata._id)
+														input(type='hidden', name='name', value = searchuserdata.name.first+' '+searchuserdata.name.last)
+														button(type='submit',style='background:orange;color:white').btn Add
+						else
+							if !befollowed
+								h4 You already send friend invitation to #{searchuserdata.name.first}	#{searchuserdata.name.first}
+								.posts-container(style='padding:0')
+									.post-container(style='background: white')
+										h4(style='color:#333333') Go Back
+										.right-content
+											div(style='text-align:center')
+												a(href='/contact/addfriend')
+													button(type='submit',style='background:orange;color:white').btn  Back
+							else
+								h4 You and #{searchuserdata.name.first} are already friends
+								.posts-container(style='padding:0')
+									.post-container(style='background: white')
+										h4(style='color:#333333') Check #{searchuserdata.name.first}&#146s information
+										.right-content
+											div(style='text-align:center')
+												a(href='/contact/addme/'+searchuserdata._id)
+													button(type='submit',style='background:orange;color:white').btn  Check
+								.posts-container(style='padding:0')
+									.post-container(style='background: white')
+										h4(style='color:#333333') Go back
+										.right-content
+											div(style='text-align:center')
+												a(href='/contact/addfriend')
+													button(type='submit',style='background:orange;color:white').btn Go back

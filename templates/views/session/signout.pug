@@ -1,0 +1,16 @@
+extends ../../layouts/session
+
+block intro
+		div(style='background:orange;position:fixed;width: 100%;z-index:20; height: 50px')
+			div(style='width: 20px;padding-left:15px;padding-top:15px')
+				a(href='#' onClick='javaScript:history.back(-1)', style='color:white ')
+					i.fa.fa-arrow-left(style='font-size:25px ')
+		div(style='height:60px')
+
+
+block content
+	//- .row: .col-md-6.col-md-offset-3
+	h1 Signed out
+	p.lead See you again soon...
+	p: a(href='/signin').btn.btn-primary.btn-block Sign in again
+	p: a(href='/').btn.btn-default.btn-block Home, Jeeves!

@@ -1,0 +1,36 @@
+extends ../../layouts/defaultlight
+
+block intro
+		div(style='background:orange;position:fixed;width: 100%;z-index:20; height: 50px')
+			div(style='width: 20px;padding-left:15px;padding-top:15px')
+				a(href='#' onClick='javascript:history.go(-1)', style='color:white ')
+					i.fa.fa-arrow-left(style='font-size:25px ')
+		div(style='height:60px')
+
+block content
+			div(style='height:40px')
+			.container
+				.panel(style='border-color:orange')
+					//-Default panel contents
+					.panel(style='background:orange;height:70px')
+						h3(style='color:white;text-align:center') Login to MeetUGo
+					.panel-body
+						.col-md-4
+							form(role='form', action='/signin', method='post')
+								.form-group
+									label.control-label(for='sender-email') Email
+									.input-icon
+										input#signin-email.form-control.email(placeholder='Email', name='email', type='email', value='')
+								.form-group
+									label.control-label(for='user-pass') Password
+									.input-icon
+										input#password.form-control(type='password', placeholder='Password', name='password')
+								.form-group
+									input.btn(style='background:orange;color:white')(type='submit', value='Login')
+									br
+									br
+									a(href='/join' style='color:black') Have No Account Yet!
+									br
+									br
+									a(href='/forgot-password' style='color:black') Forgot My Password!
+

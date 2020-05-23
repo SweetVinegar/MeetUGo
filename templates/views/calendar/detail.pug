@@ -1,0 +1,121 @@
+extends ../../layouts/defaultlight
+
+block content
+	head
+		link(href='https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css', rel='stylesheet')
+	style(type='text/css').
+		ul{padding: 0;}
+		ol, ul {list-style: none;}
+				.posts-container .post-container{padding:10px;border:2px solid orange;margin-bottom:-2px;padding-bottom:10px;}.posts-container .post-container .right-content{float:left;width:100%;}.posts-container .post-container .right-content img{position:absolute;}.posts-container .post-container .right-content .info-post ul li{margin-top:10px;float:left;}
+	div
+		div(style='background:orange;position:fixed;width: 100%;z-index:2; height: 50px')
+			div(style='width: 20px;margin-left:20px;padding-top:15px;float:left')
+				a(href='../', style='color:white ')
+					i.fa.fa-arrow-left(style='font-size:25px ')
+			div(style='width: 20px;margin-right:20px;padding-top:15px;float:right')
+				a(href='/create/calendar', style='color:white')
+					i.fa.fa-plus(style='font-size:25px')
+	div(style='height:60px')
+	.container
+		.panel(style='border-color: orange')
+			if !user
+				p Please Singin!
+			else if user._id.toString() == data.detail.who._id.toString() || allow
+				if edit == false
+
+					//-Default panel contents
+					.panel-heading(style='background:orange;color:white;text-align:center;font-size:25px') #{data.detail._.time.format('ddd-MMM-D')}: #{data.detail.title}
+					.panel-body
+						.col-md-4
+							i.fa.fa-clock-o(style='font-size:20px;font-weight:bold;color:black;') &nbsp #{data.detail._.time.format('h:ss A')}
+							if data.detail.event
+								if data.detail.time.toString() == data.detail.event.eventTime.toString()
+								else
+									span(style='font-size:20px;color:black;') , event start at #{data.detail.event._.eventTime.format('h:ss A')}
+							else
+							br
+							br
+							i.fa.fa-map-marker(style='font-size:20px;font-weight:bold;color:black;') &nbsp #{data.detail.location}
+							br
+							br
+							if data.detail.event
+								i.fa.fa-info(style='font-size:20px;font-weight:bold;color:black;') 
+									a(href='/event/eventinfo/'+data.detail.event.slug,style='color:black') &nbsp Event Link
+								hr
+								if data.detail.event.eventIntroduction
+									if data.detail.event.eventIntroduction.toString() == data.detail.description.toString()
+									else
+										h4 Event Information:
+										div(style='text-align:left;word-wrap:break-word')
+											!= data.detail.event.eventIntroduction
+										hr
+								else
+							else
+							h4 Description:
+							div(style='text-align:left;word-wrap:break-word')
+								!= data.detail.description
+							hr
+							if user._id.toString() == data.detail.who._id.toString()
+								form(method='get')
+									input(type='hidden', name='action', value='toedit')
+									.form-actions
+										button(type='submit',style='background:orange;color:white').btn Edit
+							else
+				else if toremove == false
+					.panel-heading(style='background:orange;color:white;text-align:center;font-size:25px') Edit
+					.panel-body
+						.col-md-4
+							form(method='post')
+								input(type='hidden', name='action', value='update')
+								.form-group(class=validationErrors.title ? 'has-error' : null)
+									label Title (Required)
+									input(type='text', name='title', value=data.detail.title).form-control
+								.form-group(class=validationErrors.time ? 'has-error' : null)
+									label Time (Required)
+									input#time(type='text', name='time',value=data.detail._.time.format('Y-MM-DD hh:mm:ss a')).form-control
+								.form-group(class=validationErrors.location ? 'has-error' : null)
+									label Location (Required)
+									input(type='text', name='location', value=data.detail.location).form-control
+								.form-group(class=validationErrors.description ? 'has-error' : null)
+									label Brief Description
+									input(type='html', name='description', value=data.detail.description).form-control
+								if data.detail.class.toString() == 'Event'
+								else
+									.form-group(class=validationErrors.freeEvent ? 'has-error' : null)
+										label Public? (You need to set it public to share with your friends.)
+										select(name='class').form-control
+											option(value='Private Schedule', selected=data.detail.class == 'Private Schedule') Private
+											option(value='Public Schedule', selected=data.detail.class == 'Public Schedule') Public
+								.form-actions
+									button(style='background:orange;color:white;float:right', type='submit').btn Save
+							form(method='get')
+								input(type='hidden', name='action', value='toedit')
+								.form-actions
+									button(type='submit',style='background:lightgray;color:white').btn Reset
+							form(method='get')
+								input(type='hidden', name='action', value='toremove')
+								br
+								.form-actions
+									button(type='submit',style='background:lightgray;color:white').btn Remove
+					div(style='height:10px')
+					link(href='/styles/jquery/jquery-ui-1.12.1.min.css', rel='stylesheet')
+					script(src='/js/jquery/jquery-3.3.1.js')
+					script(src='/js/jquery/jquery-ui-1.12.1.min.js')
+					link(rel='stylesheet', media='all', type='text/css', href='/styles/jquery/jquery-ui-timepicker-addon-1.6.3.css')
+					script(src='/js/jquery/jquery-ui-timepicker-addon-1.6.3.js')
+					script.
+						$("#time").datetimepicker({controlType: 'select',oneLine: true, dateFormat:'yy-mm-dd',timeFormat: 'hh:mm:ss tt',});
+				else
+					.panel-heading(style='background:orange;color:white;text-align:center;font-size:25px') Delete this schedule from the calendar?
+					.panel-body
+						.col-md-4
+							center.h3 Waring! Can't undo this after deleting.
+							form(method='post')
+								input(type='hidden', name='remove', value='delete')
+								button(type='submit',style='background:lightgray;color:white;float:left' ).btn Yes, delete it
+							form(method='get')
+								input(type='hidden', name='action', value='notremove')
+								button(type='submit',style='background:orange;color:white;float:right').btn No, don't delete it
+			else
+				.panel-heading(style='background:lightgray;color:white;text-align:center;font-size:25px')
+					h3 You're not allow to see this calendar

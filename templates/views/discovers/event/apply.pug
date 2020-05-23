@@ -1,0 +1,61 @@
+extends ../../../layouts/defaultlight
+
+block intro
+	div(style='background:orange;position:fixed;width: 100%;z-index:20; height: 50px')
+		div(style='width: 20px;padding-left:15px;padding-top:15px')
+			a(href='/event', style='color:white ')
+				i.fa.fa-arrow-left(style='font-size:25px ')
+	div(style='height:60px')
+	.container.panel(style='background:orange;height:70px;margin-bottom:-5px')
+			h3(style='text-align:center;color:white') Post Event
+block content
+	.container.panel(style='border-color:orange')
+		div(style='height:10px')
+		if applySubmitted
+			h3 Thanks for submitting event, if your event is on the unpublished list, it's succefully submitted, just need to wait to be confirmed. (Within 48 working hours.)!
+			a(href='/unevent')
+				h3 Click here to see the list
+		else
+			.row: .col-sm-8.col-md-6
+				form(method='post')
+					input(type='hidden', name='action', value='apply')
+					.form-group(class=validationErrors.eventTitle ? 'has-error' : null)
+						label Title (Required)
+						input(type='text', name='eventTitle', value=formData.eventTitle,required=true,placeholder='Title').form-control
+					.form-group(class=validationErrors.freeEvent ? 'has-error' : null)
+						label Is the event free? (Required)
+						select(name='freeEvent',required=true).form-control
+							option(value='') (select one)
+							each type in freeEvents
+								option(value=type.value, selected=formData.freeEvent == type.value)= type.label
+					.form-group(class=validationErrors.cities ? 'has-error' : null)
+						label Which City? (Required)
+						select(name='cities',required=true).form-control
+							option(value='') (select one)
+							each cit in data.cities
+								option(value=cit.id,selected=formData.cities == cit.id)= cit.name
+					.form-group(class=validationErrors.ticketLink ? 'has-error' : null)
+						label Ticket Link (Required)
+						input(type='url', name='ticketLink', value=formData.ticketLink,required=true,placeholder='http://ticket.link').form-control
+					.form-group(class=validationErrors.eventTime ? 'has-error' : null)
+						label Time (Required)
+						input#eventTime(type='text', name='eventTime',value=formData.eventTime,required=true,placeholder='2018-01-01 07:00:00 pm').form-control
+					.form-group(class=validationErrors.ticketAdress ? 'has-error' : null)
+						label Adress (Required)
+						input(type='text', name='eventAdress', value=formData.eventAdress,required=true,placeholder='Location').form-control
+					.form-group(class=validationErrors.eventEmail ? 'has-error' : null)
+						label Email
+						input(type='email', name='eventEmail', value=formData.eventEmail,placeholder='user@mail').form-control
+					.form-group(class=validationErrors.eventIntroduction ? 'has-error' : null)
+						label Brief Introduction
+						input(type='html', name='eventIntroduction', value=formData.eventIntroduction,placeholder='Brief Introduction').form-control
+					.form-actions
+						button(type='submit',style='background:orange;color:white').btn Send
+					div(style='height:10px')
+					link(href='/styles/jquery/jquery-ui-1.12.1.min.css', rel='stylesheet')
+					script(src='/js/jquery/jquery-3.3.1.js')
+					script(src='/js/jquery/jquery-ui-1.12.1.min.js')
+					link(rel='stylesheet', media='all', type='text/css', href='/styles/jquery/jquery-ui-timepicker-addon-1.6.3.css')
+					script(src='/js/jquery/jquery-ui-timepicker-addon-1.6.3.js')
+					script.
+						$("#eventTime").datetimepicker({controlType: 'select',oneLine: true, dateFormat:'yy-mm-dd',timeFormat: 'hh:mm:ss tt',});			

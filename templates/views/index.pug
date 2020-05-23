@@ -1,0 +1,153 @@
+doctype html
+html(xmlns='http://www.w3.org/1999/xhtml')
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1')
+    meta(name='description', content='MeetUGo - Meet Your New Friende via Offlinne Scenarios')
+    meta(name='author', content='MeetUGo - Meet Your New Friende via Offlinne Scenarios')
+    meta(itemprop='image', content='http://res.meetugo.com/img/logo.jpeg')
+    //if IE
+      meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
+    link(rel='shortcut icon', href='http://res.meetugo.com/img/favicon.ico')
+    title MeetUGo
+    // BOOTSTRAP CORE STYLE CSS
+    link(href='http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.css', rel='stylesheet')
+    // FONT AWESOME CSS
+    link(href='https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css', rel='stylesheet')
+    // ANIMATE  CSS
+    // <link href="./assets/css/style.css" rel="stylesheet" />
+    link(href='http://res.meetugo.com/css/style.css', rel='stylesheet')
+    // PINK STYLE VERSION IS BY DEFAULT, USE ANY ONE STYLESHEET FROM FOUR STYLESHEETS (pink,green,blue and brown) HERE
+    script.
+      var _hmt = _hmt || [];
+      (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0d26b429e7de67ec752769c8390751ae";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+      })();
+  body(style='background: #FFFAF4')
+    .col-md-12.col-sm-12(style='padding-right:0px!important;padding-left:0px!important;')
+      .board
+        .tab-content
+          #eve.tab-pane.fade.in.active(align='center')
+            .hidden-xs.hidden-sm
+              div(style='background: #FCFCFC;margin-top: 0px;height: 40px')
+              div(style='margin-top: -20px')
+                center
+                  h2(style='background:  #FCFCFC;height: 40px;color: orange;font-family:"Apple Chancery"') MeetUGo
+                  h5(style='color: orange;margin-top: -15px;font-family: "comic sans ms"') meet your new friends face to face
+              div(style='background: #FCFCFC;margin-top: -20px;height: 40px')
+            div(style='margin-top: 0px;height: 20px')
+            div
+              .col-sm-4.visible-sm(style='background:inherit;')
+              .col-md-6.col-sm-4(style='background:inherit;')
+                a(href='/event/shanghai')
+                  img(src='http://res.meetugo.com/img/homepage/shevent.jpg', style='width: 40%; margin-top: 0%; border-radius: 50% ', alt='')
+                  h3(style='color:black;font-family: "comic sans ms"') Shanghai Events
+              .col-sm-4.visible-sm(style='background:inherit;')
+              .visible-sm(style='clear:both')
+            div
+              .col-sm-4.visible-sm(style='background:inherit;')
+              .col-md-6.col-sm-4(style='background:inherit;')
+                a(href='/event/beijing')
+                  img(src='http://res.meetugo.com/img/homepage/bjevent.jpg', style='width: 40%; margin-top: 0%; border-radius: 50% ', alt='')
+                  h3(style='color:black;font-family: "comic sans ms"') Beijing Events
+                div(style='height:120px')
+              .col-sm-4.visible-sm(style='background:inherit;')
+              .visible-sm(style='clear:both')
+            div(style='height:120px')
+          #spa.tab-pane.fade(align='center')
+            div(style='height:450px')
+              .hidden-xs.hidden-sm
+                div(style='background: #FCFCFC;margin-top: 0px;height: 40px')
+                div(style='margin-top: -20px')
+                  center
+                    h2(style='background:  #FCFCFC;height: 40px;color: orange') MeetUGo & Space
+                div(style='background: #FCFCFC;margin-top: -20px;height: 40px')
+              .col-md-6(style='background: #FAF6EC')
+                .col-md-3.col-sm-4.col-xs-3(style='background:inherit;')
+                .col-md-6.col-sm-3.col-xs-6(style='background:inherit')
+                  div(style='height:10px')
+                  a(href='http://space.meetugo.com', style='color: black;')
+                    img(src='http://res.meetugo.com/img/space/living.jpeg', style='width: 100%; margin-top: 0%; border-radius: 50% ', alt='')
+                    center
+                      h3(style='font-family: "comic sans ms"') Living Apartment        
+                      p.visible-md.visible-lg(style='font-family: "comic sans ms"') Find your apartment, have your awsome life circle. Meet your lovely neighbours.
+                      div(style='height:26px')
+                .col-md-3.col-sm-5.col-xs-3(style='background:inherit')
+                div(style='clear:both')
+              .col-md-6(style='background:#F1EADC')
+                .col-md-3.col-sm-4.col-xs-3(style='background:inherit;')
+                .col-md-6.col-sm-3.col-xs-6(style='background:inherit')
+                  div(style='height:10px')
+                  img(src='http://res.meetugo.com/img/space/working.jpeg', style='width: 100%; margin-top: 0%; border-radius: 50% ', alt='')
+                  center
+                      h3(style='font-family: "comic sans ms"') Working Space (Suspend)
+                      p.visible-md.visible-lg(style='font-family: "comic sans ms"')
+                        | Find your working space, have your quality community. Meet outstanding coworkers.
+                .col-md-3.col-sm-5.col-xs-3(style='background:inherit')
+                div(style='clear:both')
+              div(style='height:120px;width:100%;background:#FFFAF4;padding-right:0px!important;padding-left:0px!important')
+            div(style='height:120px')
+          #dis.tab-pane.fade(align='center')
+            div(style='height: 150px')
+            div
+              a(href='/discover')
+                i.fa.fa-compass.fa-2x(style='border-radius: 100%;cursor: default;display: inline-block; height: 2em;line-height: 2em;width: 2em;background: grey;color: #ffffff;')
+                h3(style='color:black;font-family: "comic sans ms"') Discover
+            div(style='height:200px')
+          #setting.tab-pane.fade(align='center')
+            div(style='height: 100px')
+            div
+              a(href='/apply')
+                i.fa.fa-edit.fa-2x(style='border-radius: 100%;cursor: default;display: inline-block; height: 2em;line-height: 2em;width: 2em;background: grey;color: #ffffff;')
+                h3(style='color:black;font-family: "comic sans ms"') Post Event
+            div(style='height: 40px')
+            div
+              a(href='http://res.meetugo.com/about.html')
+                i.fa.fa-info.fa-2x(style='border-radius: 100%;cursor: default;display: inline-block; height: 2em;line-height: 2em;width: 2em;background: grey;color: #ffffff;')
+                h3(style='color:black;font-family: "comic sans ms"') About Us
+            div(style='height:40px')
+            div
+              a(href='/pastevent')
+                i.fa.fa-history.fa-2x(style='border-radius: 100%;cursor: default;display: inline-block; height: 2em;line-height: 2em;width: 2em;background: grey;color: #ffffff;')
+                h3(style='color:black;font-family: "comic sans ms"') Past Events
+            div(style='height:40px')
+            div
+              a(href='/unevent')
+                i.fa.fa-spinner.fa-2x(style='border-radius: 100%;cursor: default;display: inline-block; height: 2em;line-height: 2em;width: 2em;background: grey;color: #ffffff;')
+                h3(style='color:black;font-family: "comic sans ms"') Event Unpublished
+            div(style='height:120px')
+      .board.putbottom(style='background:#FDFDFD')
+        div
+          ul.nav.nav-tabs
+            li.active
+              a(href='#eve', data-toggle='tab')
+                span.round-tabs.one
+                  i.fa.fa-group
+                  h5 Events
+              br
+            li
+              a(href='#spa', data-toggle='tab')
+                span.round-tabs.one
+                  i.fa.fa-home
+                  h5 Spaces
+              br
+            li
+              a(href='#dis', data-toggle='tab')
+                span.round-tabs.one
+                  i.fa.fa-compass
+                  h5 Discover
+              br
+            li
+              a(href='#setting', data-toggle='tab')
+                span.round-tabs.one
+                  i.fa.fa-cog
+                  h5 Setting
+              br
+    // SCROLL TO TOP SECTION END
+    // JQUERY CORE SCRIPTS
+    script(src='https://cdn.bootcss.com/jquery/1.10.2/jquery.js')
+    // BOOTSTRAP SCRIPTS
+    script(src='http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.js')

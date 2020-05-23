@@ -1,0 +1,74 @@
+extends ../../layouts/defaultlight
+
+block intro
+  div(style='background:white;position:fixed;width: 100%;z-index:20; height: 50px')
+    div(style='width: 20px;padding-left:15px;padding-top:15px')
+      a(href='/setting', style='color:orange ')
+        i.fa.fa-arrow-left(style='font-size:25px ')
+  div(style='background:#F8F8F8;position:fixed;width: 100%;z-index:2; height: 52px')
+  div(style='height:60px')
+
+block content
+  head
+    link(rel='shortcut icon', href='http://res.meetugo.com/img/favicon.ico')
+    meta(charset='UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1')
+    meta(name='description', itemprop='description', content = user.name.first + ' Candelar')
+    meta(itemprop='name', content = user.name.first + ' Candelar')
+    meta(itemprop='image', content='http://res.meetugo.com/img/logolarge.jpeg')
+    title #{user.name.first} Candelar
+    link(href='http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.css', rel='stylesheet')
+    link(href='https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css', rel='stylesheet')
+    //-for nav buttom
+    link(href='/styles/navstyle.css', rel='stylesheet')
+  body(style='background:#FFFAF4')
+    div(style='height:10px')
+    .container
+      .panel-heading(style='background:orange;color:white;text-align:center;font-size:25px')
+            p.lead Hi #{user.name.first}, these are your settings and profile details
+      .panel(style='border-color: orange;margin-top:-3px').panel-body
+        .page-content.tile.ph-2.pv-2.mb-2
+          if user.profilePic
+            h3 Profile Picture
+            center
+              img(src='http://res.meetugo.com/pics/user/'+ user.profilePic.filename, style='border:solid 5px lightgray;height:200px;width:200px;border-radius:100%; overflow:hidden')
+          else
+          form(method='post' ,enctype='multipart/form-data')
+              input(type='hidden', name='action', value='profile.pic',size='50')
+              center
+                input(type='file', name='profilePic',accept='image/*',value=user.profilePic)
+                br
+              button(type='submit',style='background:orange;color:white').btn Upload Picture
+          hr
+          form(method='post', enctype='multipart/form-data', autocomplete='off', novalidate).form-horizontal
+            input(type='hidden', name='action', value='profile.details')
+            h3 Personal Information
+            .form-group
+              label.col-sm-2.control-label Name
+              .col-sm-10: .form-row
+                .col-xs-6: input(type='text', name='name.first' value=user.name.first).form-control
+                .col-xs-6: input(type='text', name='name.last' value=user.name.last).form-control
+            .form-group
+              label.col-sm-2.control-label Intro
+              .col-sm-10
+                input(type='text', name='introduction' value=user.introduction).form-control
+            .form-group
+              label.col-sm-2.control-label Email
+              .col-sm-10: input(type='email', name='email' value=user.email).form-control
+            button(type='submit', data-loading-text="Saving...",style='background:orange;color:white').btn Save profile           
+        .ui-reveal
+          .ui-reveal__initial
+            hr
+          .ui-reveal__hidden
+            form(method='post', autocomplete='off')
+              input(type='hidden', name='action', value='profile.password')
+              h3 Change password
+              .form-group
+                label(for='change-passwordNew').sr-only New Password
+                input(type='password', name='password', placeholder='New Password', id='change-passwordNew').form-control
+              .form-group
+                label(for='change-passwordConfirm').sr-only Confirm Password
+                input(type='password', name='password_confirm', placeholder='Confirm Password', id='signin-passwordConfirm').form-control
+              .form-group
+                button(type='submit', data-loading-text="Changing...",style='background:orange;color:white').btn Change
+    div(style='height:120px')

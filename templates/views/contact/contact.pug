@@ -1,0 +1,171 @@
+doctype html
+html(lang='en')
+	head
+		include ../../layouts/header.pug
+		meta(name='description', itemprop='description', content = user.name.first + ' Candelar')
+		meta(itemprop='name', content = user.name.first + ' Candelar')
+		title #{user.name.first} Candelar
+		link(href='/styles/navstyle.css', rel='stylesheet')
+		style.
+			a.list-group-item.active, a.list-group-item.active:hover, a.list-group-item.active:focus {background-color: orange!important;border-color: orange!important;}
+	body(style='background:#FFFAF4')
+		style(type='text/css').
+			ul{padding: 0;}
+			ol, ul {list-style: none;}
+			.posts-container .post-container{padding:10px;border:2px solid #F8F8F8;margin-bottom:-2px;padding-bottom:10px;overflow:auto}.posts-container .post-container .right-content{float:left;width:100%;}.posts-container .post-container .right-content img{position:absolute;}.posts-container .post-container .right-content .info-post ul li{margin-top:5px;float:left;}.clear {clear: both;display: block;overflow: hidden;visibility: hidden;width: 0;height: 0;}
+		div
+			div(style='background:white;position:fixed;width: 100%;z-index:3; height: 50px')
+				div(style='width: 20px;margin-left:10px;padding-top:15px;float:left')
+					p(style='color:orange; font-weight:bold ') MeetUGo.Com
+				div(style='margin-right:10px;padding-top:15px;float:right')
+					a(href='/contact/addfriend', style='color:orange')
+						span(style='color:orange; font-weight:bold') Add Friend &nbsp
+						span
+							i.fa.fa-plus(style='font-weight:bold')
+			div(style='background:#F8F8F8;position:fixed;width: 100%;z-index:2; height: 52px')
+			div(style='background:orange;width: 100%;height: 50px')
+			div(style='position: relative; margin-left: auto;margin-right: auto;max-width: 600px;')
+				if removefriend
+					div(style='height:100px')
+					.posts-container(style='padding:0')
+						a(href='/contact')
+							.post-container(style='background: white')
+								.right-content
+									div(style='text-align:center')
+										h4(style='color:#333333') You have remove #{removewho}
+										button(style='background:orange;color:white').btn Back
+								.clear
+				else
+					if checkremove
+						div(style='height:100px')
+						.posts-container(style='padding:0')
+							h4(style='color:#333333') Make sure you want to remove
+							.post-container(style='background: white')
+								.right-content
+									div(style='text-align:center')
+										h4 Yes
+										form(method='post')
+											input(type='hidden', name='action', value='deletecheck')
+											input(type='hidden', name='_id', value = removeid)
+											input(type='hidden', name='name', value = removewho)
+											button(type='submit',style='background:orange;color:white').btn Delete
+							.post-container(style='background: white')
+								.right-content
+									div(style='text-align:center')
+										h4 No
+										a(href='/contact')
+											button(style='background:orange;color:white').btn Back
+								.clear
+						div(style='height:100px')
+					else
+						h4 My Name Card
+						-var link = "http://meetugo.com/addme/"+user._id
+						center(style='background:white;border:2px solid #F8F8F8;')
+							div(style='margin-top:30px;margin-bottom:30px')
+								div(id='qrcodeTable')
+								script(type='text/javascript').
+									jQuery('#qrcodeTable').qrcode("#{link.toString()}");
+						.posts-container(style='padding:0')
+							a(href='/addme/'+user._id)
+								.post-container(style='background: white')
+									.right-content
+										div(style='text-align:center')
+											button(style='background:orange;color:white').btn Name Card
+						h4 Add friends
+						.posts-container(style='padding:0')
+							a(href='/contact/addfriend')
+								.post-container(style='background: white')
+									.right-content
+										div(style='text-align:center')
+											button(style='background:orange;color:white').btn + New Friend
+									.clear
+						if followme.length > 0
+							h4(style='color:red') Requests to add me as friend
+							a(href='/contact/checkfriend' style='text-decoration:none!important;')
+								.posts-container(style='padding:0')
+									.post-container(style='background: white')
+										.right-content
+											div(style='text-align:center')
+												each f, i in followme
+													if i > (followme.length - 4)
+														div
+															if f.profilePic.filename
+																span
+																	img(src='http://res.meetugo.com/pics/user/'+ f.profilePic.filename, style='height:30px;width:30px;border-radius:100%;margin-left:-15px;margin-top:-3px')
+																span(style='color:red;font-weight:bold;font-size:20px;margin-left:15px') &nbsp#{f.name.first} #{f.name.last}
+															else
+																span
+																	i.fa.fa-user(style='color:red;font-size:20px')
+																span(style='color:red;font-weight:bold;font-size:20px') &nbsp#{f.name.first} #{f.name.last}
+												h3(style='font-weight:bold;color:red') + Click here to see more requests
+										.clear
+						h4 My contacts
+						if checkremove
+							.posts-container(style='padding:0')
+								a(href='/contact')
+									.post-container(style='background: white')
+										.right-content
+											div(style='text-align:center')
+												h4(style='color:#333333') Make sure you want to remove
+												form(method='post')
+													input(type='hidden', name='action', value='deletecheck')
+													input(type='hidden', name='_id', value = removeid)
+													input(type='hidden', name='name', value = removewho)
+													button(type='submit',style='background:orange;color:white').btn Delete
+										.clear
+						else
+							.posts-container(style='padding:0')
+								each f in userdata
+									.post-container(style='background: white')
+										div(style='float:left;margin-right:10px;padding-left:8px')
+											if f.profilePic.filename
+												img(src='http://res.meetugo.com/pics/user/'+ f.profilePic.filename, style='border:solid 2px lightgray;height:50px;width:50px;border-radius:100%;')
+											else
+												div(style='border:solid 2px lightgray;height:50px;width:50px;border-radius:100%;font-size:30px')
+													i.fa.fa-user(style='margin-left:12px;color:lightgray')
+										div(style='float:left')
+											.right-content
+												a(href='/mycalendar/' + f._id)
+													p(style='word-wrap:break-word;font-size:20px;color:dimgray; font-weight:bold;margin-top:12px; margin-left:10px') #{f.name.first} #{f.name.last}
+										div(style='padding-top:60px')
+														form(method='post')
+															input(type='hidden', name='action', value='deletefriend')
+															input(type='hidden', name='_id', value=f._id)
+															input(type='hidden', name='name', value=f.name.first)
+															button(type='submit',style='background:lightgray;color:white').btn Delete
+										.clear
+			div(style='height:200px')
+			.board.putbottom(style='background:white')
+				div(style='background:#F8F8F8;height: 2px')
+				div
+					ul.nav.nav-tabs
+						li
+							a(href='/', data-toggle='tab')
+								span.round-tabs.one
+									i.fa.fa-calendar
+									h5 Calendar
+							br
+						li.active
+							a(href='/contact')
+								span.round-tabs.one
+									i.fa.fa-users
+									h5 Contacts
+							br
+						li
+							a(href='/create/event')
+								span.round-tabs.one(style='background:transparent!important;border:2px;color:black')
+									i.fa.fa-plus.fa-x
+									h5 Post
+							br
+						li
+							a(href='/discovers')
+								span.round-tabs.one
+									i.fa.fa-compass
+									h5 Discover
+							br
+						li
+							a(href='/setting')
+								span.round-tabs.one
+									i.fa.fa-cog
+									h5 Setting
+							br
