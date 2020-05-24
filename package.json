@@ -10,7 +10,7 @@
     "keystone-emailer": "0.0.2",
     "keystone-enmailer": "git+https://git@github.com/enraiser/keystone-enmailer.git",
     "keystone-storage-adapter-s3": "^1.1.1",
-    "lodash": "^4.13.1",
+    "lodash": "^4.17.13",
     "nodemailer": "^4.6.4",
     "nodemailer-smtp-transport": "^2.7.4",
     "pug": "2.0.0-beta11"
