@@ -31,7 +31,7 @@ node_modules
 .DS_Store
 
 fix.js
-
+package.json
 *.pem
 
 updates/0.0.1-admins.js
