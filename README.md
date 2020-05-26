@@ -1,7 +1,7 @@
 # MeetUGo
  Social Calendar
 
- This is our project MeetUGo.Com from 2018~2019. We use keystone.js.
+ This is our project MeetUGo.Com from 2018~2020. We use keystone.js.
 
  To install this website. Download it to your computer.
 
